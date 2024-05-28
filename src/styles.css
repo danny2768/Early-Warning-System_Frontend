@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts */
+@font-face {
+  font-family: 'Inter';
+  src: url('assets/fonts/Inter/Inter-Regular.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Custom scrollbar - Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #777777 #484848;
+  scroll-behavior: smooth;
+}
