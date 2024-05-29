@@ -13,11 +13,11 @@ export class LayoutPageComponent {
       title: 'Dashboard',
       route: '/admin/dashboard'
     },
-    // TODO: Fix routes
     {
       title: 'Map',
-      route: '/auth'
+      route: '/admin/map'
     },
+    // TODO: Fix routes
     {
       title: 'Users',
       route: '/auth'

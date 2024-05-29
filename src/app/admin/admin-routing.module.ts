@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutPageComponent } from './layout/layout-page/layout-page.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { MapPageComponent } from './pages/map-page/map-page.component';
+
 
 const routes: Routes = [
   {
@@ -9,6 +11,7 @@ const routes: Routes = [
     component: LayoutPageComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'map', component: MapPageComponent },
       {
         path: '',
         redirectTo: 'dashboard',
