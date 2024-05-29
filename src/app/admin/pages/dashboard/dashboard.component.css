@@ -1,0 +1,15 @@
+.text-shadow-1 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.svg-shadow {
+  filter: drop-shadow(2px 2px 2px rgb(0 0 0 / 0.2));
+}
+
+.custom-shadow {
+  box-shadow: -4px 4px 4px #d1d9e6, -4px -4px 5px #f9f9f9;
+}
