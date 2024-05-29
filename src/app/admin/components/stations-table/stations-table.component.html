@@ -1,1 +1,32 @@
-<p>stations-table works!</p>
+<!-- TODO: improve table -->
+<div class="overflow-auto">
+  <table class="min-w-full table-auto">
+    <thead>
+      <tr class="text-left md:text-center text-[#AF8260] text-shadow-2">
+        <!-- <th class="w-1/7 px-4">Station id</th> -->
+        <th class="w-1/7 px-4">Name</th>
+        <th class="w-1/7 px-4">State</th>
+        <th class="w-1/7 px-4">County code</th>
+        <th class="w-1/7 px-4">Longitude</th>
+        <th class="w-1/7 px-4">Latitude</th>
+        <!-- <th class="w-1/7 px-4">networkId</th> -->
+        <th class="w-1/7 px-4">Created</th>
+        <th class="w-1/7 px-4">Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let station of stations" class="text-left md:text-center">
+        <!-- <td class="font-bold px-4">{{ station.id }}</td> -->
+        <td class="px-4 py-1">{{ station.name }}</td>
+        <td class="px-4 py-1">{{ station.state }}</td>
+        <td class="px-4 py-1">{{ station.countryCode }}</td>
+        <td class="px-4 py-1">{{ station.coordinates.longitude }}</td>
+        <td class="px-4 py-1">{{ station.coordinates.latitude }}</td>
+        <!-- <td class="px-4 py-1">{{ station.networkId }}</td> -->
+        <td class="px-4 py-1">{{ station.createdAt | date }}</td>
+        <td class="px-4 py-1">{{ station.updatedAt | date }}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
