@@ -1,0 +1,114 @@
+<!--
+  ModalDialogComponent
+
+  This component creates a modal dialog with a title and description.
+  The modal can be closed by clicking the close button or by clicking outside the modal.
+  Optionally, the modal can also have Accept and Discard buttons.
+
+  Inputs:
+    - title: The title of the modal.
+    - description: The description of the modal.
+    - acceptButtonText: The text for the Accept button. If provided, the Accept button will be displayed.
+    - discardButtonText: The text for the Discard button. If provided, the Discard button will be displayed.
+
+  Outputs:
+    - closeEvent: An event that is emitted when the modal is closed.
+    - acceptEvent: An event that is emitted when the Accept button is clicked.
+    - discardEvent: An event that is emitted when the Discard button is clicked.
+
+  Example usage:
+    <shared-modal-dialog
+      [title]="modalTitle"
+      [description]="modalDescription"
+      [acceptButtonText]="'Yes'"
+      [discardButtonText]="'No'"
+      (closeEvent)="handleCloseEvent()"
+      (acceptEvent)="handleAcceptEvent()"
+      (discardEvent)="handleDiscardEvent()">
+    </shared-modal-dialog>
+
+  If you want to use the modal with just a Close button, you can do so:
+    <shared-modal-dialog
+      [title]="modalTitle"
+      [description]="modalDescription"
+      (closeEvent)="handleCloseEvent()">
+    </shared-modal-dialog>
+-->
+<div
+  class="fixed z-10 inset-0 overflow-y-auto"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+  >
+    <div
+      (click)="onClose()"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      aria-hidden="true"
+    ></div>
+    <span
+      class="hidden sm:inline-block sm:align-middle sm:h-screen"
+      aria-hidden="true"
+      >&#8203;</span
+    >
+    <div
+      (click)="$event.stopPropagation()"
+      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+    >
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3
+              class="text-lg leading-6 font-medium text-gray-900"
+              id="modal-title"
+            >
+              {{ title }}
+            </h3>
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">
+                {{ description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+        <ng-container *ngIf="acceptButtonText || discardButtonText; else closeTemplate">
+          <button
+            *ngIf="acceptButtonText"
+            type="button"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
+                bg-[#50A060] text-base font-medium text-white hover:bg-[#349e49] focus:outline-none focus:ring-2
+                focus:ring-offset-2 focus:ring-green-400 sm:ml-3 sm:w-auto sm:text-sm"
+            (click)="onAccept()"
+          >
+            {{ acceptButtonText }}
+          </button>
+          <button
+            *ngIf="discardButtonText"
+            type="button"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
+                bg-[#50A060] text-base font-medium text-white hover:bg-[#349e49] focus:outline-none focus:ring-2
+                focus:ring-offset-2 focus:ring-red-400 sm:ml-3 sm:w-auto sm:text-sm"
+            (click)="onDiscard()"
+          >
+            {{ discardButtonText }}
+          </button>
+        </ng-container>
+        <ng-template #closeTemplate>
+          <button
+            type="button"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
+                bg-[#50A060] text-base font-medium text-white hover:bg-[#349e49] focus:outline-none focus:ring-2
+                focus:ring-offset-2 focus:ring-green-400 sm:ml-3 sm:w-auto sm:text-sm"
+            (click)="onClose()"
+          >
+            Close
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

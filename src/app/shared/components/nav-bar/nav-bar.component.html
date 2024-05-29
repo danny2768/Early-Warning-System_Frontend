@@ -1,0 +1,57 @@
+<nav id="navbar" class="fixed z-50 font-[Inter] bg-gray-50 backdrop-blur-[1px] drop-shadow">
+  <div class="w-screen">
+    <div class="flex justify-between items-center w-[90%] mx-auto my-3 md:my-4">
+
+      <!-- Logo -->
+      <!-- TODO: Find how to solve the width issue -->
+      <div class="hidden md:flex w-fit">
+        <img src="/assets/floodGuard/logo-icon.svg" alt="FloodGuard Logo" class="w-6 md:w-7">
+      </div>
+      <div class="md:hidden w-32">
+        <img src="/assets/floodGuard/logo-icon-name.svg" alt="FloodGuard Logo">
+      </div>
+
+      <!-- Navbar links -->
+      <div class="hidden md:flex gap-6 text-sm 2xl:text-base text-gray-400">
+        @for (navItem of navItems; track navItem.title) {
+          <a [routerLink]="navItem.route" routerLinkActive="text-black"
+            class="hover:text-gray-600"
+            >
+            {{navItem.title}}
+          </a>
+        }
+      </div>
+
+      <!-- User button -->
+      <div class="hidden md:flex">
+        <img src="/assets/icons/Daniel-Cobos-Avatar.png" alt="User avatar" class="w-7 rounded-full">
+      </div>
+
+      <!-- Mobile button -->
+      <div class="md:hidden flex items-center hover:text-gray-400">
+        <button (click)="toggleMobileMenu()">
+          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile menu -->
+    @if (showMobileMenu) {
+      <div id="mobileMenu" class="mobileMenu md:hidden w-full text-gray-400">
+        @for (navItem of navItems; track $index) {
+          <a [routerLink]="navItem.route"
+            routerLinkActive="text-black"
+            (click)="toggleMobileMenu()"
+            class="block py-4 text-center hover:text-gray-600"
+          >
+            {{navItem.title}}
+          </a>
+        }
+      </div>
+    }
+
+  </div>
+</nav>

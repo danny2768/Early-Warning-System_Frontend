@@ -1,0 +1,19 @@
+<div class="flex min-h-screen bg-center bg-no-repeat bg-cover">
+  <!-- column one -->
+  <div class="hidden md:flex background">
+    <!-- Remove the img tag here -->
+  </div>
+
+  <!-- column two -->
+  <div class="font-[Inter] w-full md:w-3/5 pt-[10vh] bg-mobile md:bg-white shadow-none md:customShadow">
+    <!-- logo -->
+    <div class="flex justify-center mt-4" [routerLink]="['/auth']">
+      <img class="w-[80%] md:w-[70%] svg-shadow" src="/assets/floodGuard/logo.svg" alt="GoPark logo">
+    </div>
+
+    <!-- Form -->
+    <div class="mt-8">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
