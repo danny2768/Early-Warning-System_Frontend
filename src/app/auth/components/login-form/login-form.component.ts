@@ -84,7 +84,6 @@ export class LoginFormComponent {
     if (!this.loginForm.controls[field]) return null;
 
     const errors = this.loginForm.controls[field].errors || {};
-    console.log(errors);
 
     for (const key of Object.keys(errors)) {
       switch (key) {
