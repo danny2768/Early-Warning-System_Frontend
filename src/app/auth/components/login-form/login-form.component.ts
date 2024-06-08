@@ -48,10 +48,20 @@ export class LoginFormComponent {
           return false;
         }
 
-        if (resp.user.role.includes('ADMIN_ROLE')) this.router.navigate(['/admin']);
-        if (resp.user.role.includes('USER_ROLE')) this.router.navigate(['/user']);
+        if (resp.user.role.includes('ADMIN_ROLE')) {
+          this.router.navigate(['/admin']);
+          return true;
+        }
 
-        return true;
+        if (resp.user.role.includes('USER_ROLE')) {
+          this.router.navigate(['/user'])
+          return true;
+        }
+
+        else {
+          this.displayDialog('Error', 'Something went wrong. Please try again later or contact an admin.');
+          return false;
+        }
       })
 
 
