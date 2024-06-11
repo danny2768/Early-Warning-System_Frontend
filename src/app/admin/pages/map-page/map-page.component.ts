@@ -119,4 +119,9 @@ export class MapPageComponent implements OnInit, OnDestroy {
     const displayOptionsMenu = document.getElementById('displayOptionsMenu') as HTMLDivElement;
     if (displayOptionsMenu) displayOptionsMenu.removeAttribute('open');
   }
+
+  changeMapStyle(style: MapStyle ) {
+    this.mapStyle = style;
+    if ( this.mapStyleDropdown ) this.mapStyleDropdown.nativeElement.removeAttribute('open');
+  }
 }

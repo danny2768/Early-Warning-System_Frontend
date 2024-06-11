@@ -105,7 +105,7 @@
                              'text-gray-500': style === 'standard',
                              'text-yellow-500': style === 'streets',
                              'text-[#50A060]': style === 'satellite'}"
-                 (click)="mapStyle = style">
+                 (click)="changeMapStyle(style)">
                 <div>
                   {{ style | titlecase }}
                 </div>
