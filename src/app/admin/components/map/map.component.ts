@@ -28,6 +28,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
   public divMap?: ElementRef;
 
   public map?: Map;
+
+  @Input()
   public zoom: number = 1.2;
   public currentLngLat: LngLat = new LngLat(-73.120454, 7.140268);
 
@@ -50,6 +52,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
       this.deleteActiveMarkers();
       this.addStationsMarkers( this.stations );
       this.zoomToAllMarkers();
+    }
+
+    if (changes['zoom'] && !changes['zoom'].isFirstChange()) {
+      this.map?.zoomTo(this.zoom);
     }
   }
 
@@ -112,6 +118,11 @@ export class MapComponent implements AfterViewInit, OnChanges {
       offset: [0, 20],
       padding: 80,
       duration: 2500,
+      maxZoom: 15,
     });
+  }
+
+  public getCurrentZoom(): number {
+    return this.map?.getZoom() || this.zoom;
   }
 }

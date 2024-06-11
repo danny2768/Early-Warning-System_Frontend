@@ -4,6 +4,7 @@ import { AdminService } from '../../services/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Network } from '../../../shared/interfaces/network.interface';
 import { Station } from '../../../shared/interfaces/station.interface';
+import { MapComponent } from '../../components/map/map.component';
 
 interface NetworkWithSelectionStatus {
   network: Network;
@@ -22,6 +23,9 @@ interface StationWithSelectionStatus {
 })
 export class MapPageComponent implements OnInit, OnDestroy {
 
+  @ViewChild(MapComponent)
+  private mapComponent?: MapComponent;
+
   @ViewChild('mapStyleDropdown')
   private mapStyleDropdown?: ElementRef;
 
@@ -39,6 +43,8 @@ export class MapPageComponent implements OnInit, OnDestroy {
 
   public mapStyle: MapStyle = 'standard'
   public availableMapStyles: MapStyle[] = Object.keys(MapStyleEnum) as MapStyle[];
+
+  public mapZoom: number = 1.2;
 
   constructor(
     private adminService: AdminService
@@ -123,5 +129,15 @@ export class MapPageComponent implements OnInit, OnDestroy {
   changeMapStyle(style: MapStyle ) {
     this.mapStyle = style;
     if ( this.mapStyleDropdown ) this.mapStyleDropdown.nativeElement.removeAttribute('open');
+  }
+
+  public zoomIn(): void {
+    if (!this.mapComponent) return;
+    this.mapZoom = this.mapComponent.getCurrentZoom() + 0.8;
+  }
+
+  public zoomOut(): void {
+    if (!this.mapComponent) return;
+    this.mapZoom = this.mapComponent.getCurrentZoom() - 0.8;
   }
 }

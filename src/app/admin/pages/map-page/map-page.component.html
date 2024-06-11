@@ -1,7 +1,7 @@
 <div class="w-screen overflow-y-hidden">
 
-  <div class="flex justify-center w-full">
-    <admin-map [style]="mapStyle" [stations]="mapStations"></admin-map>
+  <div class="flex justify-center w-full select-none">
+    <admin-map [style]="mapStyle" [stations]="mapStations" [zoom]="mapZoom"></admin-map>
   </div>
 
   <!-- Left column -->
@@ -66,7 +66,7 @@
 
               <!-- Apply button -->
               <div>
-                <button class="bg-[#50A060] text-white text-base font-semibold py-2 px-4 rounded-box w-full" (click)="applyDisplayItems()">Apply</button>
+                <button class="bg-[#50A060] text-white text-base font-semibold py-2 px-4 rounded-box w-full select-none" (click)="applyDisplayItems()">Apply</button>
               </div>
 
 
@@ -83,7 +83,7 @@
   <div class="absolute w-fit top-10 md:top-12 right-0">
 
     <!-- Right side menus -->
-    <div class="mr-4 mt-6 block md:flex">
+    <div class="mr-4 mt-6 block md:flex md:flex-col md:justify-end">
 
       <!-- Map style -->
       <details #mapStyleDropdown class="dropdown md:dropdown-left">
@@ -117,6 +117,14 @@
       </details>
 
       <!-- Map zoom -->
+      <div class="flex flex-col gap-2 w-fit mt-4 ml-auto select-none cursor-pointer">
+        <button class="flex justify-center py-1 px-1 bg-white rounded-lg text-2xl font-bold summary-popup" (click)="zoomIn()">
+          <svg fill="none" stroke-width="2" class="size-6 stroke-gray-500" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <button class="flex justify-center py-1 px-1 bg-white rounded-lg text-2xl font-bold summary-popup" (click)="zoomOut()">
+          <svg fill="none" stroke-width="2" class="size-6 stroke-gray-500" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/></svg>
+        </button>
+      </div>
 
     </div>
   </div>
