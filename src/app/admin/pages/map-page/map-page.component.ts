@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MapStyle } from '../../interfaces/map-style.type';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MapStyle, MapStyleEnum } from '../../interfaces/map-style.type';
 import { AdminService } from '../../services/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Network } from '../../../shared/interfaces/network.interface';
@@ -22,6 +22,14 @@ interface StationWithSelectionStatus {
 })
 export class MapPageComponent implements OnInit, OnDestroy {
 
+  @ViewChild('mapStyleDropdown')
+  private mapStyleDropdown?: ElementRef;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.resize();
+  }
+
   private destroy$ = new Subject<void>();
 
   public networks: NetworkWithSelectionStatus[] = [];
@@ -30,10 +38,23 @@ export class MapPageComponent implements OnInit, OnDestroy {
   public mapStations: Station[] = [];
 
   public mapStyle: MapStyle = 'standard'
+  public availableMapStyles: MapStyle[] = Object.keys(MapStyleEnum) as MapStyle[];
 
   constructor(
     private adminService: AdminService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.resize();
+  }
+
+  resize() {
+    if (window.innerWidth < 768) {
+      this.mapStyleDropdown!.nativeElement.classList.add('dropdown-end');
+    } else {
+      this.mapStyleDropdown!.nativeElement.classList.remove('dropdown-end');
+    }
+  }
 
   ngOnInit(): void {
     this.getNetworks();

@@ -54,7 +54,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   updateMapStyle(): void {
-    const newStyle = this.availableStyles[this.style];
+    const newStyle = this.availableStyles[this.style.toLowerCase()];
     this.map?.setStyle(newStyle);
   }
 
