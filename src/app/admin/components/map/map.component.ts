@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { environments } from '../../../../environments/environment';
-import { LngLat, Map } from 'mapbox-gl';
+import { LngLat, LngLatBounds, Map, Marker } from 'mapbox-gl';
 import { MapStyle } from '../../interfaces/map-style.type';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
+import { Station } from '../../../shared/interfaces/station.interface';
 
 @Component({
   selector: 'admin-map',
@@ -20,6 +20,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
     'satellite': "mapbox://styles/mapbox/satellite-streets-v12"
   };
 
+  @Input()
+  public stations: Station[] = [];
+  private mapMarkers: Marker[] = [];
+
   @ViewChild('map')
   public divMap?: ElementRef;
 
@@ -33,19 +37,25 @@ export class MapComponent implements AfterViewInit, OnChanges {
     private adminService: AdminService,
   ) {}
 
+  ngAfterViewInit(): void {
+    this.buildMap();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['style'] && !changes['style'].isFirstChange()) {
       this.updateMapStyle();
+    }
+
+    if (changes['stations'] && !changes['stations'].isFirstChange()) {
+      this.deleteActiveMarkers();
+      this.addStationsMarkers( this.stations );
+      this.zoomToAllMarkers();
     }
   }
 
   updateMapStyle(): void {
     const newStyle = this.availableStyles[this.style];
     this.map?.setStyle(newStyle);
-  }
-
-  ngAfterViewInit(): void {
-    this.buildMap();
   }
 
   buildMap(): void {
@@ -66,6 +76,42 @@ export class MapComponent implements AfterViewInit, OnChanges {
         this.isMapLoading = false;
       }, 1000);
     });
+
+    this.map.on('error', (error) => {
+      console.error('Error on map', error);
+    });
   }
 
+  addStationsMarkers(stations: Station[]): void {
+    if(!this.map) return;
+
+    stations.forEach(station => {
+      const marker = new Marker({ color: '#C0FF00' })
+        .setLngLat([station.coordinates.longitude, station.coordinates.latitude])
+        .addTo(this.map!);
+      this.mapMarkers.push(marker);
+    });
+
+  }
+
+  deleteActiveMarkers() {
+    this.mapMarkers.forEach(marker => marker.remove());
+    this.mapMarkers = [];
+  }
+
+  zoomToAllMarkers() {
+    if (!this.map || this.mapMarkers.length === 0) return;
+
+    const bounds = new LngLatBounds();
+
+    this.mapMarkers.forEach(marker => {
+      bounds.extend(marker.getLngLat());
+    });
+
+    this.map.fitBounds(bounds, {
+      offset: [0, 20],
+      padding: 80,
+      duration: 2500,
+    });
+  }
 }

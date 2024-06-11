@@ -1,0 +1,14 @@
+.text-shadow-2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.checkbox {
+  height: 1.1rem;
+  width: 1.1rem;
+  border-width: 2px;
+}
+
+/* .scrollable-menu {
+  max-height: 90px; /* Adjust this value to your needs */
+  overflow-y: scroll;
+} */

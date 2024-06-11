@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MapComponent } from './components/map/map.component';
 import { StationsTableComponent } from './components/stations-table/stations-table.component';
 import { MapPageComponent } from './pages/map-page/map-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -22,6 +23,8 @@ import { MapPageComponent } from './pages/map-page/map-page.component';
     CommonModule,
     AdminRoutingModule,
     SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
   ]
 })
 export class AdminModule { }
