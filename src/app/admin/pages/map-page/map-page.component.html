@@ -1,83 +1,82 @@
 <div class="w-screen overflow-y-hidden">
+
   <div class="flex justify-center w-full">
     <admin-map [style]="mapStyle" [stations]="mapStations"></admin-map>
   </div>
-  <div class="absolute w-fit top-10 md:top-12 left-0"
-    [ngClass]="'text-white'">
 
+  <!-- Left column -->
+  <div class="absolute w-fit top-10 md:top-12 left-0">
+
+    <!-- Left side menus -->
     <div class="ml-4 mt-6 block md:flex">
 
-      <!-- Menus -->
-      <div class="">
+      <!-- Display Options menu -->
+      <ul class="menu w-fit rounded-box p-0 text-base">
+        <li>
+          <details open id="displayOptionsMenu">
+            <!-- Button title -->
+            <summary class="bg-white hover:bg-white text-bas text-shadow-2 font-semibold text-[#50A060] w-fit">Display Options</summary>
 
-        <!-- Display Options menu -->
-        <ul class="menu w-fit rounded-box p-0 text-base">
-          <li>
-            <details open id="displayOptionsMenu">
-              <!-- Button title -->
-              <summary class="bg-white hover:bg-white text-bas text-shadow-2 font-semibold text-[#50A060] w-fit">Display Options</summary>
+            <!-- Dropdown content -->
+            <div class="bg-white text-black mt-2 p-4 rounded-box w-64">
 
-              <!-- Dropdown content -->
-              <div class="bg-white text-black mt-2 p-4 rounded-box w-64">
-
-                <!-- Networks -->
-                <details open class="mb-2">
-                  <summary class="text-shadow-2 font-semibold text-[#AF8260] select-none cursor-pointer">Networks</summary>
-                  <div class="p-2">
-                    <!-- Select All checkbox -->
-                    <div class="flex items-center gap-2 mb-1 select-none">
-                      <label for="selectAllNetworks" class="cursor-pointer">Select All</label>
-                      <input type="checkbox" id="selectAllNetworks" class="checkbox" (click)="selectAll($event, networks)">
-                    </div>
-
-                    <div class="overflow-y-auto max-h-24">
-                      <!-- Submenu items -->
-                      @for (networkSelect of networks; track $index) {
-                        <div class="flex items-center gap-2 mb-1 ml-3">
-                          <label [for]="networkSelect.network.id" class="select-none cursor-pointer">{{ networkSelect.network.name }}</label>
-                          <input type="checkbox" [id]="networkSelect.network.id" class="checkbox" [(ngModel)]="networkSelect.selected" (change)="selectNetworkStations( networkSelect.network.id, $event )">
-                        </div>
-                      }
-                    </div>
+              <!-- Networks -->
+              <details open class="mb-2">
+                <summary class="text-shadow-2 font-semibold text-[#AF8260] select-none cursor-pointer">Networks</summary>
+                <div class="p-2">
+                  <!-- Select All checkbox -->
+                  <div class="flex items-center gap-2 mb-1 select-none">
+                    <label for="selectAllNetworks" class="cursor-pointer">Select All</label>
+                    <input type="checkbox" id="selectAllNetworks" class="checkbox" (click)="selectAll($event, networks)">
                   </div>
-                </details>
 
-                <!-- Stations -->
-                <details open>
-                  <summary class="text-shadow-2 font-semibold text-[#AF8260] select-none cursor-pointer">Stations</summary>
-                  <div class="p-4">
-                    <!-- Select All checkbox -->
-                    <div class="flex items-center gap-2 mb-1 select-none">
-                      <label for="selectAllStations" class="cursor-pointer">Select All</label>
-                      <input type="checkbox" id="selectAllStations" class="checkbox" (click)="selectAll($event, stations)">
-                    </div>
-
-                    <div class="overflow-y-auto max-h-24 md:max-h-32">
+                  <div class="overflow-y-auto max-h-24">
                     <!-- Submenu items -->
-                    @for (stationSelect of stations; track $index) {
+                    @for (networkSelect of networks; track $index) {
                       <div class="flex items-center gap-2 mb-1 ml-3">
-                        <label [for]="stationSelect.station.id" class="select-none cursor-pointer">{{ stationSelect.station.name }}</label>
-                        <input type="checkbox" [id]="stationSelect.station.id" [(ngModel)]="stationSelect.selected" class="checkbox">
+                        <label [for]="networkSelect.network.id" class="select-none cursor-pointer">{{ networkSelect.network.name }}</label>
+                        <input type="checkbox" [id]="networkSelect.network.id" class="checkbox" [(ngModel)]="networkSelect.selected" (change)="selectNetworkStations( networkSelect.network.id, $event )">
                       </div>
                     }
-                    </div>
                   </div>
-                </details>
-
-                <!-- Apply button -->
-                <div>
-                  <button class="bg-[#50A060] text-white text-base font-semibold py-2 px-4 rounded-box w-full" (click)="applyDisplayItems()">Apply</button>
                 </div>
+              </details>
 
+              <!-- Stations -->
+              <details open>
+                <summary class="text-shadow-2 font-semibold text-[#AF8260] select-none cursor-pointer">Stations</summary>
+                <div class="p-4">
+                  <!-- Select All checkbox -->
+                  <div class="flex items-center gap-2 mb-1 select-none">
+                    <label for="selectAllStations" class="cursor-pointer">Select All</label>
+                    <input type="checkbox" id="selectAllStations" class="checkbox" (click)="selectAll($event, stations)">
+                  </div>
 
+                  <div class="overflow-y-auto max-h-24 md:max-h-32">
+                  <!-- Submenu items -->
+                  @for (stationSelect of stations; track $index) {
+                    <div class="flex items-center gap-2 mb-1 ml-3">
+                      <label [for]="stationSelect.station.id" class="select-none cursor-pointer">{{ stationSelect.station.name }}</label>
+                      <input type="checkbox" [id]="stationSelect.station.id" [(ngModel)]="stationSelect.selected" class="checkbox">
+                    </div>
+                  }
+                  </div>
+                </div>
+              </details>
+
+              <!-- Apply button -->
+              <div>
+                <button class="bg-[#50A060] text-white text-base font-semibold py-2 px-4 rounded-box w-full" (click)="applyDisplayItems()">Apply</button>
               </div>
-            </details>
-          </li>
-        </ul>
 
-      </div>
+
+            </div>
+          </details>
+        </li>
+      </ul>
 
     </div>
 
   </div>
+
 </div>
