@@ -16,3 +16,14 @@
   scrollbar-color: #777777 #484848;
   scroll-behavior: smooth;
 }
+
+/* Mapbox */
+.mapboxgl-popup-close-button {
+  width: 40px;
+  height: 40px;
+}
+
+.mapboxgl-popup-content {
+  padding: 4;
+  /* width: 180px; */
+}

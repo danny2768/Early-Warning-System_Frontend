@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { environments } from '../../../../environments/environment';
-import { LngLat, LngLatBounds, Map, Marker } from 'mapbox-gl';
+import { LngLat, LngLatBounds, Map, Marker, Popup } from 'mapbox-gl';
 import { MapStyle } from '../../interfaces/map-style.type';
 import { Station } from '../../../shared/interfaces/station.interface';
 
@@ -111,12 +111,45 @@ export class MapComponent implements AfterViewInit, OnChanges {
     if(!this.map) return;
 
     stations.forEach(station => {
+      // Creating popup for the marker
+      const popup = this.createStationPopup(station);
+      // Creating marker
       const marker = new Marker({ color: '#C0FF00' })
         .setLngLat([station.coordinates.longitude, station.coordinates.latitude])
+        .setPopup(popup)
         .addTo(this.map!);
       this.mapMarkers.push(marker);
     });
+  }
 
+  createStationPopup(station: Station): Popup {
+    return new Popup({
+      closeButton: true,
+      focusAfterOpen: false,
+    }).setHTML(`
+        <div class="font-bold text-lg">
+          ${station.name}
+        </div>
+
+        <div class="mb-2 select-text">
+          <div>
+            <strong>Country code: </strong>${station.countryCode}
+          </div>
+          <div>
+            <strong>State: </strong>${station.state}
+          </div>
+          <div>
+            <strong>Coordinates: </strong>${(station.coordinates.latitude).toFixed(6)}, ${(station.coordinates.longitude).toFixed(6)}
+          </div>
+          <div>
+            <strong>Network: </strong>${station.networkId}
+          </div>
+        </div>
+
+        <button class="bg-blue-500 text-white text-base font-semibold py-1 px-4 rounded-box w-full select-none"">
+          <a>View details</a>
+        </button>
+      `);
   }
 
   deleteActiveMarkers() {
