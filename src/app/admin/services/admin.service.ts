@@ -16,6 +16,14 @@ export class AdminService {
     private http: HttpClient,
   ) { }
 
+  public saveToLocalStorage(key: string, value: any) {
+    localStorage.setItem( key, JSON.stringify(value) );
+  }
+
+  public getFromLocalStorage(key: string) {
+    return JSON.parse( localStorage.getItem(key) || 'null' );
+  }
+
   // # Networks requests
   getNetworks() {
     return this.http.get<NetworkResponse>(`${this.baseUrl}/api/networks`);

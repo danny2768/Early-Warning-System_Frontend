@@ -63,8 +63,22 @@ export class MapPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getNetworks();
-    this.getStations();
+    this.getNetworks().then(() => {
+      // Load the selected networks from localStorage
+      const selectedNetworkIds = JSON.parse(localStorage.getItem('selectedNetworks') || '[]');
+      this.networks.forEach(network => {
+        network.selected = selectedNetworkIds.includes(network.network.id);
+      });
+    });
+
+    this.getStations().then(() => {
+      // Load the selected stations from localStorage
+      const selectedStationIds = JSON.parse(localStorage.getItem('selectedStations') || '[]');
+      this.stations.forEach(station => {
+        station.selected = selectedStationIds.includes(station.station.id);
+      });
+      this.applyDisplayItems();
+    });
   }
 
   ngOnDestroy(): void {
@@ -72,28 +86,36 @@ export class MapPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private getNetworks(): void {
-    this.adminService.getNetworks().pipe( takeUntil(this.destroy$) )
-    .subscribe({
-      next: (resp) => {
-        this.networks = resp.networks.map(network => ({ network, selected: false }));
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
-  }
-
-  private getStations(): void {
-    this.adminService.getStations().pipe( takeUntil(this.destroy$) )
+  private getNetworks(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.adminService.getNetworks().pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
-          this.stations = resp.stations.map(station => ({ station, selected: false }));
+          this.networks = resp.networks.map(network => ({ network, selected: false }));
+          resolve();
         },
         error: (err) => {
           console.log(err);
+          reject(err);
         }
       })
+    });
+  }
+
+  private async getStations(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.adminService.getStations().pipe( takeUntil(this.destroy$) )
+        .subscribe({
+          next: (resp) => {
+            this.stations = resp.stations.map(station => ({ station, selected: false }));
+            resolve();
+          },
+          error: (err) => {
+            console.log(err);
+            reject(err);
+          }
+        })
+    });
   }
 
   selectAll(event: any, items: NetworkWithSelectionStatus[] | StationWithSelectionStatus[]) {
@@ -124,6 +146,14 @@ export class MapPageComponent implements OnInit, OnDestroy {
     this.mapStations = this.stations.filter(station => station.selected).map(station => station.station);
     const displayOptionsMenu = document.getElementById('displayOptionsMenu') as HTMLDivElement;
     if (displayOptionsMenu) displayOptionsMenu.removeAttribute('open');
+
+    // Save the selected stations to localStorage
+    const selectedStationsIds = this.mapStations.map(station => station.id);
+    this.adminService.saveToLocalStorage('selectedStations', selectedStationsIds);
+
+    // Save the selected networks to localStorage
+    const selectedNetworkIds = this.networks.filter(network => network.selected).map(network => network.network.id);
+    this.adminService.saveToLocalStorage('selectedNetworks', selectedNetworkIds);
   }
 
   changeMapStyle(style: MapStyle ) {
