@@ -35,6 +35,12 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   public isMapLoading: boolean = true;
 
+  public dialogInfo = {
+    showDialog: false,
+    title: '',
+    description: ''
+  }
+
   constructor(
     private adminService: AdminService,
   ) {}
@@ -84,8 +90,21 @@ export class MapComponent implements AfterViewInit, OnChanges {
     });
 
     this.map.on('error', (error) => {
-      console.error('Error on map', error);
+      // console.error('Error on map', error);
+      this.displayDialog('Error', 'An error occurred while loading the map. Please try again later.');
     });
+  }
+
+  displayDialog( title: string, description: string): void {
+    this.dialogInfo = {
+      showDialog: true,
+      title,
+      description
+    }
+  }
+
+  closeDialog(): void {
+    this.dialogInfo.showDialog = false;
   }
 
   addStationsMarkers(stations: Station[]): void {
