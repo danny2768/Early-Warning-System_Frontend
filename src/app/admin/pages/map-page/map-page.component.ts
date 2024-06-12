@@ -77,7 +77,7 @@ export class MapPageComponent implements OnInit, OnDestroy {
       this.stations.forEach(station => {
         station.selected = selectedStationIds.includes(station.station.id);
       });
-      this.applyDisplayItems();
+      this.applyDisplayItems( false );
     });
   }
 
@@ -142,10 +142,9 @@ export class MapPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyDisplayItems() {
+  applyDisplayItems( closeMenu: boolean = true ) {
     this.mapStations = this.stations.filter(station => station.selected).map(station => station.station);
-    const displayOptionsMenu = document.getElementById('displayOptionsMenu') as HTMLDivElement;
-    if (displayOptionsMenu) displayOptionsMenu.removeAttribute('open');
+    if ( closeMenu ) this.closeDisplayOptionsMenu();
 
     // Save the selected stations to localStorage
     const selectedStationsIds = this.mapStations.map(station => station.id);
@@ -154,6 +153,11 @@ export class MapPageComponent implements OnInit, OnDestroy {
     // Save the selected networks to localStorage
     const selectedNetworkIds = this.networks.filter(network => network.selected).map(network => network.network.id);
     this.adminService.saveToLocalStorage('selectedNetworks', selectedNetworkIds);
+  }
+
+  closeDisplayOptionsMenu() {
+    const displayOptionsMenu = document.getElementById('displayOptionsMenu') as HTMLDivElement;
+    displayOptionsMenu.removeAttribute('open');
   }
 
   changeMapStyle(style: MapStyle ) {
