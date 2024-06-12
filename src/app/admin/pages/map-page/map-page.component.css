@@ -1,0 +1,15 @@
+.text-shadow-2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.checkbox {
+  height: 1.1rem;
+  width: 1.1rem;
+  border-width: 2px;
+}
+
+.summary-popup:active:hover,
+.summary-popup:active:focus {
+  animation: button-pop 1s ease-out;
+  transform: scale(var(--btn-focus-scale, 0.97));
+}

@@ -58,7 +58,7 @@ export class AuthService {
 
   public isUserAuthenticated(): boolean {
     const token = this.cookieService.get('token');
-    const roles = this.cookieService.get('role')?.split(', ') || [];
+    const roles = this.cookieService.get('role')?.split(',') || [];
     return token && roles.includes('USER_ROLE') ? true : false;
   }
 

@@ -2,7 +2,7 @@
 
 This repository contains the frontend of an IoT platform designed for the detection of early warnings of river overflows. The platform is designed to collect data from level, flow and rainfall sensors, and provide real-time alerts through a web interface.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.10.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
 
 ## Prerequisites
 
