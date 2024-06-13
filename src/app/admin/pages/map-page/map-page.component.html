@@ -1,4 +1,11 @@
 <div class="w-screen overflow-y-hidden">
+  @if ( dialogInfo.showDialog ) {
+    <shared-modal-dialog
+      [title]="dialogInfo.title"
+      [description]="dialogInfo.description"
+      (closeEvent)="closeDialog()">
+    </shared-modal-dialog>
+  }
 
   <div class="flex justify-center w-full select-none">
     <admin-map [style]="mapStyle" [stations]="mapStations" [zoom]="mapZoom"></admin-map>
