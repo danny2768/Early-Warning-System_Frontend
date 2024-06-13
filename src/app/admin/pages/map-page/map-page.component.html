@@ -33,7 +33,7 @@
                   <div class="overflow-y-auto max-h-24">
                     <!-- Submenu items -->
                     @for (networkSelect of networks; track $index) {
-                      <div class="flex items-center gap-2 mb-1 ml-3">
+                      <div class="flex items-center justify-between gap-2 mb-1 mr-3">
                         <label [for]="networkSelect.network.id" class="select-none cursor-pointer">{{ networkSelect.network.name }}</label>
                         <input type="checkbox" [id]="networkSelect.network.id" class="checkbox" [(ngModel)]="networkSelect.selected" (change)="selectNetworkStations( networkSelect.network.id, $event )">
                       </div>
@@ -45,7 +45,7 @@
               <!-- Stations -->
               <details open>
                 <summary class="text-shadow-2 font-semibold text-[#AF8260] select-none cursor-pointer">Stations</summary>
-                <div class="p-4">
+                <div class="p-2">
                   <!-- Select All checkbox -->
                   <div class="flex items-center gap-2 mb-1 select-none">
                     <label for="selectAllStations" class="cursor-pointer">Select All</label>
@@ -55,7 +55,7 @@
                   <div class="overflow-y-auto max-h-24 md:max-h-32">
                   <!-- Submenu items -->
                   @for (stationSelect of stations; track $index) {
-                    <div class="flex items-center gap-2 mb-1 ml-3">
+                    <div class="flex items-center justify-between gap-2 mb-1 mx-3">
                       <label [for]="stationSelect.station.id" class="select-none cursor-pointer">{{ stationSelect.station.name }}</label>
                       <input type="checkbox" [id]="stationSelect.station.id" [(ngModel)]="stationSelect.selected" class="checkbox">
                     </div>
