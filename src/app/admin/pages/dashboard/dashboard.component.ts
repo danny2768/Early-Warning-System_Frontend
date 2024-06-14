@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.getNetworks( 1, 1 );
     this.getStations( 1, 1 );
-    this.getUsers();
+    this.getUsers( 1, 1 );
   }
 
   private getNetworks( page: number , limit: number ): void {
@@ -50,8 +50,8 @@ export class DashboardComponent implements OnInit, OnDestroy{
       })
   }
 
-  private getUsers(): void {
-    this.adminService.getUsers().pipe( takeUntil(this.destroy$) )
+  private getUsers( page: number , limit: number): void {
+    this.adminService.getUsers( page, limit ).pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
           this.totalUsers = resp.pagination.totalItems;
