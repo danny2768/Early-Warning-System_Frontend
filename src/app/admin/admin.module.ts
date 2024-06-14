@@ -9,6 +9,9 @@ import { MapComponent } from './components/map/map.component';
 import { StationsTableComponent } from './components/stations-table/stations-table.component';
 import { MapPageComponent } from './pages/map-page/map-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NetworksPageComponent } from './pages/networks-page/networks-page.component';
+import { StationsPageComponent } from './pages/stations-page/stations-page.component';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DashboardComponent,
     MapComponent,
     StationsTableComponent,
-    MapPageComponent
+    MapPageComponent,
+    NetworksPageComponent,
+    StationsPageComponent,
+    UsersPageComponent
   ],
   imports: [
     CommonModule,
