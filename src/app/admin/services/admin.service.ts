@@ -39,7 +39,7 @@ export class AdminService {
   // # Readings requests
 
   // # Users requests
-  getUsers() {
-    return this.http.get<UserResponse>(`${this.baseUrl}/api/users`);
+  getUsers( page: number = 1, limit: number = 10 ) {
+    return this.http.get<UserResponse>(`${this.baseUrl}/api/users?page=${page}&limit=${limit}`);
   }
 }
