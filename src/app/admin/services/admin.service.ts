@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { NetworkResponse } from '../interfaces/network-resp.interface';
 import { StationResponse } from '../interfaces/stations-resp.interface';
 import { UserResponse } from '../interfaces/users-resp.interface';
+import { Network } from '../../shared/interfaces/network.interface';
+import { Station } from '../../shared/interfaces/station.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +27,13 @@ export class AdminService {
   }
 
   // # Networks requests
-  getNetworks() {
-    return this.http.get<NetworkResponse>(`${this.baseUrl}/api/networks`);
+  getNetworks( page: number = 1, limit: number = 10 ) {
+    return this.http.get<NetworkResponse>(`${this.baseUrl}/api/networks?page=${page}&limit=${limit}`);
   }
 
   // # Stations requests
-  getStations() {
-    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations`);
+  getStations( page: number = 1, limit: number = 10 ) {
+    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations?page=${page}&limit=${limit}`);
   }
 
   // # Readings requests
