@@ -1,30 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavItem } from '../../../shared/interfaces/nav-item.interface';
+import { AdminRoutesService } from '../../services/admin-routes.service';
+import { withHashLocation } from '@angular/router';
 
 @Component({
   selector: 'app-layout-page',
   templateUrl: './layout-page.component.html',
   styleUrl: './layout-page.component.css'
 })
-export class LayoutPageComponent {
+export class LayoutPageComponent implements OnInit {
 
-  navItems: NavItem[] = [
-    {
-      title: 'Dashboard',
-      route: '/admin/dashboard'
-    },
-    {
-      title: 'Map',
-      route: '/admin/map'
-    },
-    // TODO: Fix routes
-    {
-      title: 'Users',
-      route: '/auth'
-    },
-    {
-      title: 'Settings',
-      route: '/auth'
-    },
-  ];
+  public navItems: NavItem[] = [];
+
+  constructor(
+    private adminRoutesService: AdminRoutesService
+  ) {}
+
+  ngOnInit(): void {
+    this.navItems = this.adminRoutesService.getNavItems();
+
+    // Remove settings from the navItems
+    this.navItems = this.navItems.filter(item => item.title !== 'Settings');
+  }
+
+
 }

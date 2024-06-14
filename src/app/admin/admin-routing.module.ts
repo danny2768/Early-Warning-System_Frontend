@@ -12,6 +12,10 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'map', component: MapPageComponent },
+      { path: 'networks', component: MapPageComponent },
+      { path: 'stations', component: MapPageComponent },
+      { path: 'users', component: MapPageComponent },
+      { path: 'settings', component: MapPageComponent },
       {
         path: '',
         redirectTo: 'dashboard',
