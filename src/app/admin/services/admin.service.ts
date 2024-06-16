@@ -31,6 +31,22 @@ export class AdminService {
     return this.http.get<NetworkResponse>(`${this.baseUrl}/api/networks?page=${page}&limit=${limit}`);
   }
 
+  getNetworkById( id: string ) {
+    return this.http.get<Network>(`${this.baseUrl}/api/networks/${id}`);
+  }
+
+  createNetwork( network: Network ) {
+    return this.http.post<Network>(`${this.baseUrl}/api/networks`, network);
+  }
+
+  updateNetwork( network: Network ) {
+    return this.http.put<Network>(`${this.baseUrl}/api/networks/${network.id}`, network);
+  }
+
+  deleteNetwork( id: string ) {
+    return this.http.delete<Network>(`${this.baseUrl}/api/networks/${id}`);
+  }
+
   // # Stations requests
   getStations( page: number = 1, limit: number = 10 ) {
     return this.http.get<StationResponse>(`${this.baseUrl}/api/stations?page=${page}&limit=${limit}`);
