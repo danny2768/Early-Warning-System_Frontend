@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { LayoutPageComponent } from './layout/layout-page/layout-page.component';
@@ -12,10 +12,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NetworksPageComponent } from './pages/networks-page/networks-page.component';
 import { StationsPageComponent } from './pages/stations-page/stations-page.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { SearchNetworkPipe } from './pipes/search-network.pipe';
+import { SortByNetworkPipe } from './pipes/sort-by-network.pipe';
 
 
 @NgModule({
   declarations: [
+    // Pipes
+    SearchNetworkPipe,
+    SortByNetworkPipe,
+
+    // Components
     LayoutPageComponent,
     DashboardComponent,
     MapComponent,
@@ -23,7 +30,7 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
     MapPageComponent,
     NetworksPageComponent,
     StationsPageComponent,
-    UsersPageComponent
+    UsersPageComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +38,9 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
+  ],
+  providers: [
+    DatePipe,
   ]
 })
 export class AdminModule { }

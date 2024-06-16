@@ -1,0 +1,5 @@
+.summary-popup:active:hover,
+.summary-popup:active:focus {
+  animation: button-pop 1s ease-out;
+  transform: scale(var(--btn-focus-scale, 0.97));
+}
