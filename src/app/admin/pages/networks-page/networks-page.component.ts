@@ -3,6 +3,15 @@ import { AdminService } from '../../services/admin.service';
 import { Network } from '../../../shared/interfaces/network.interface';
 import { Pagination } from '../../../shared/interfaces/pagination.interface';
 
+interface YesNoDialogOptions {
+  title: string;
+  description: string;
+  acceptButtonText: string;
+  discardButtonText: string;
+  acceptEvent: () => void;
+  discardEvent: () => void;
+}
+
 @Component({
   selector: 'app-networks-page',
   templateUrl: './networks-page.component.html',
@@ -24,6 +33,16 @@ export class NetworksPageComponent implements OnInit {
     description: ''
   };
 
+  public yesNoDialogInfo = {
+    showDialog: false,
+    title: '',
+    description: '',
+    acceptButtonText: '',
+    discardButtonText: '',
+    acceptEvent: () => {},
+    discardEvent: () => {},
+  };
+
   constructor(
     private adminService: AdminService,
   ) {}
@@ -41,6 +60,30 @@ export class NetworksPageComponent implements OnInit {
       },
       error: err => {
         this.displayDialog('Error', 'An error occurred while loading the networks. Please try again later.');
+      }
+    });
+  }
+
+  onDeleteNetwork( networkId: string ): void {
+    this.displayYesNoDialog({
+      title: 'Delete network',
+      description: 'Are you sure you want to delete this network?',
+      acceptButtonText: 'Yes',
+      discardButtonText: 'No',
+      acceptEvent: () => this.deleteNetwork(networkId),
+      discardEvent: () => this.closeYesNoDialog()
+    });
+  }
+
+  deleteNetwork( networkId: string ): void {
+    this.adminService.deleteNetwork( networkId ).subscribe({
+      next: () => {
+        this.closeYesNoDialog();
+        this.displayDialog('Success', 'Network deleted successfully')
+        this.loadNetworks();
+      },
+      error: err => {
+        this.displayDialog('Error', 'An error occurred while deleting the network. Please try again later.');
       }
     });
   }
@@ -84,8 +127,19 @@ export class NetworksPageComponent implements OnInit {
     }
   }
 
+  displayYesNoDialog( options: YesNoDialogOptions ): void {
+    this.yesNoDialogInfo = {
+      showDialog: true,
+      ...options
+    }
+  }
+
   closeDialog(): void {
     this.dialogInfo.showDialog = false;
+  }
+
+  closeYesNoDialog(): void {
+    this.yesNoDialogInfo.showDialog = false;
   }
 
   // # Other methods
