@@ -37,15 +37,16 @@
       <!-- Action buttons -->
       <div class="flex gap-2 mt-2 sm:mt-0">
         <button
-          class="bg-[#37da4f] hover:bg-[#30c045] text-white text-sm font-bold py-2 px-4 rounded"
+          class="bg-[#37da4f] hover:bg-[#30c045] text-white text-sm font-bold py-2 px-4 rounded button-popup-animation"
           (click)="displayFormDialog( 'create' )"
         >
           Add Network
         </button>
         <button
-          class="bg-black hover:bg-gray-800 text-white text-sm font-bold py-2 px-4 rounded"
+          class="bg-black hover:bg-gray-800 text-white text-sm font-bold py-2 px-4 rounded button-popup-animation"
 
         >
+          <!-- TODO: implement export to csv button -->
           Export to CSV +
         </button>
       </div>
@@ -58,7 +59,7 @@
         <!-- Filters -->
         <div class="flex flex-row gap-4">
 
-          <details id="filterDropdown" class="dropdown dropdown-bottom">
+          <details id="filterDropdown" class="dropdown dropdown-bottom select-none">
             <summary class="flex gap-2 items-center bg-gray-100 hover:bg-gray-200 rounded-lg px-3 py-2 summary-popup"  (click)="closeDropdown(['limitDropdown'])">
               <div class="text-gray-500">Filter by</div>
               <svg fill="none" stroke="currentColor" stroke-width="1.5" class="size-5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"/></svg>
@@ -72,7 +73,7 @@
           </details>
 
           <!-- Items per page -->
-          <details id="limitDropdown" class="dropdown dropdown-bottom dropdown-end">
+          <details id="limitDropdown" class="dropdown dropdown-bottom dropdown-end select-none">
             <summary class="flex gap-2 items-center bg-gray-100 hover:bg-gray-200 rounded-lg px-3 py-2 summary-popup" (click)="closeDropdown(['filterDropdown'])">
               <div class="text-gray-500">Items per page</div>
               <svg fill="none" stroke="currentColor" stroke-width="1.5" class="size-5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5"/></svg>
