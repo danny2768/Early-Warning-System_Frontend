@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { Network } from '../../../shared/interfaces/network.interface';
 import { Pagination } from '../../../shared/interfaces/pagination.interface';
+import { Subject, takeUntil } from 'rxjs';
 
 interface YesNoDialogOptions {
   title: string;
@@ -17,12 +18,13 @@ interface YesNoDialogOptions {
   templateUrl: './networks-page.component.html',
   styleUrl: './networks-page.component.css'
 })
-export class NetworksPageComponent implements OnInit {
+export class NetworksPageComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   public networks: Network[] = [];
   public pagination?: Pagination;
   public limit: 10 | 25 | 50 | 100 = 10;
-
 
   public orderby: keyof Network = 'id';
   public searchText: string = '';
@@ -51,6 +53,11 @@ export class NetworksPageComponent implements OnInit {
     this.loadNetworks();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadNetworks( page: number = 1, limit: number = 10 ) {
     this.adminService.getNetworks( page, limit ).subscribe({
       next: resp => {
@@ -76,7 +83,7 @@ export class NetworksPageComponent implements OnInit {
   }
 
   deleteNetwork( networkId: string ): void {
-    this.adminService.deleteNetwork( networkId ).subscribe({
+    this.adminService.deleteNetwork( networkId ).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.closeYesNoDialog();
         this.displayDialog('Success', 'Network deleted successfully')
