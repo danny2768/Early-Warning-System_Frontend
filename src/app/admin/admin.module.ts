@@ -14,6 +14,7 @@ import { StationsPageComponent } from './pages/stations-page/stations-page.compo
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { SearchNetworkPipe } from './pipes/search-network.pipe';
 import { SortByNetworkPipe } from './pipes/sort-by-network.pipe';
+import { NetworkFormModalComponent } from './components/network-form-modal/network-form-modal.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SortByNetworkPipe } from './pipes/sort-by-network.pipe';
     NetworksPageComponent,
     StationsPageComponent,
     UsersPageComponent,
+    NetworkFormModalComponent,
   ],
   imports: [
     CommonModule,

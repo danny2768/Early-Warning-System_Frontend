@@ -13,6 +13,13 @@ interface YesNoDialogOptions {
   discardEvent: () => void;
 }
 
+interface FormDialogInfo {
+  showdialog: boolean;
+  title: string;
+  action: 'create' | 'update';
+  network?: Network;
+}
+
 @Component({
   selector: 'app-networks-page',
   templateUrl: './networks-page.component.html',
@@ -44,6 +51,12 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
     acceptEvent: () => {},
     discardEvent: () => {},
   };
+
+  public formDialogInfo: FormDialogInfo = {
+    showdialog: false,
+    title: '',
+    action: 'create',
+  }
 
   constructor(
     private adminService: AdminService,
@@ -141,12 +154,30 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  displayFormDialog( action: 'create' | 'update', network?: Network ): void {
+    if (action === 'update') {
+      this.formDialogInfo.title = 'Update network';
+      this.formDialogInfo.network = network;
+    } else {
+      this.formDialogInfo.title = 'Create network';
+      this.formDialogInfo.network = undefined;
+    }
+
+    this.formDialogInfo.action = action;
+    this.formDialogInfo.showdialog = true;
+  }
+
   closeDialog(): void {
     this.dialogInfo.showDialog = false;
   }
 
   closeYesNoDialog(): void {
     this.yesNoDialogInfo.showDialog = false;
+  }
+
+  closeFormDialog(): void {
+    this.formDialogInfo.showdialog = false;
+    this.loadNetworks( this.pagination?.page, this.pagination?.limit );
   }
 
   // # Other methods
