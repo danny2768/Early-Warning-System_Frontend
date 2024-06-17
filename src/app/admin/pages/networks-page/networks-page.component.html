@@ -146,6 +146,16 @@
         </table>
       </div>
 
+      @if (networks.length === 0) {
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-12">
+          <img src="/assets/icons/undraw-empty.svg" alt="Empty" class="w-40 md:w-72">
+          <div class="text-gray-500 w-60 flex flex-col gap-4">
+            <p class="text-xl">Oops! There's nothing to display at the moment.</p>
+            <p class="text-base">Tip: Add a new network to get started!</p>
+          </div>
+        </div>
+      }
+
       <!-- Pagination -->
       @if ( pagination && pagination.totalPages > 1) {
         <div class="join flex justify-center mt-4">
