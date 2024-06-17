@@ -20,10 +20,6 @@ export class AdminRoutesService {
       route: '/admin/networks'
     },
     {
-      title: 'Stations',
-      route: '/admin/stations'
-    },
-    {
       title: 'Users',
       route: '/admin/users'
     },
