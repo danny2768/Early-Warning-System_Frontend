@@ -52,6 +52,26 @@ export class AdminService {
     return this.http.get<StationResponse>(`${this.baseUrl}/api/stations?page=${page}&limit=${limit}`);
   }
 
+  getStationById( id: string ) {
+    return this.http.get<Station>(`${this.baseUrl}/api/stations/${id}`);
+  }
+
+  getStationsByNetworkId( networkId: string ) {
+    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/network/${networkId}`);
+  }
+
+  createStation( station: Station ) {
+    return this.http.post<Station>(`${this.baseUrl}/api/stations`, station);
+  }
+
+  updateStation( station: Station ) {
+    return this.http.put<Station>(`${this.baseUrl}/api/stations/${station.id}`, station);
+  }
+
+  deleteStation( id: string ) {
+    return this.http.delete<Station>(`${this.baseUrl}/api/stations/${id}`);
+  }
+
   // # Readings requests
 
   // # Users requests
