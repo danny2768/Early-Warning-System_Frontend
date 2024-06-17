@@ -57,7 +57,7 @@ export class AdminService {
   }
 
   getStationsByNetworkId( networkId: string ) {
-    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/network/${networkId}`);
+    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/by-network/${networkId}`);
   }
 
   createStation( station: Station ) {
