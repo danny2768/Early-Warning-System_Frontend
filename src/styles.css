@@ -17,6 +17,13 @@
   scroll-behavior: smooth;
 }
 
+/* Custom css */
+.button-popup-animation:active:hover,
+.button-popup-animation:active:focus {
+  animation: button-pop 1s ease-out;
+  transform: scale(var(--btn-focus-scale, 0.97));
+}
+
 /* Mapbox */
 .mapboxgl-popup-close-button {
   width: 40px;
