@@ -4,8 +4,9 @@ import { LayoutPageComponent } from './layout/layout-page/layout-page.component'
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { MapPageComponent } from './pages/map-page/map-page.component';
 import { NetworksPageComponent } from './pages/networks-page/networks-page.component';
-import { StationsPageComponent } from './pages/stations-page/stations-page.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { StationDetailPageComponent } from './pages/station-detail-page/station-detail-page.component';
+import { NetworkDetailPageComponent } from './pages/network-detail-page/network-detail-page.component';
 
 
 const routes: Routes = [
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'map', component: MapPageComponent },
       { path: 'networks', component: NetworksPageComponent },
-      { path: 'stations', component: StationsPageComponent },
+      { path: 'networks/:id', component: NetworkDetailPageComponent },
+      { path: 'station-detail/:id', component: StationDetailPageComponent },
       { path: 'users', component: UsersPageComponent },
       // TODO: create settings page
       { path: 'settings', component: MapPageComponent },

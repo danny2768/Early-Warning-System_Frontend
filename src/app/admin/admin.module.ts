@@ -10,11 +10,12 @@ import { StationsTableComponent } from './components/stations-table/stations-tab
 import { MapPageComponent } from './pages/map-page/map-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NetworksPageComponent } from './pages/networks-page/networks-page.component';
-import { StationsPageComponent } from './pages/stations-page/stations-page.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { SearchNetworkPipe } from './pipes/search-network.pipe';
 import { SortByNetworkPipe } from './pipes/sort-by-network.pipe';
 import { NetworkFormModalComponent } from './components/network-form-modal/network-form-modal.component';
+import { NetworkDetailPageComponent } from './pages/network-detail-page/network-detail-page.component';
+import { StationDetailPageComponent } from './pages/station-detail-page/station-detail-page.component';
 
 
 @NgModule({
@@ -30,9 +31,10 @@ import { NetworkFormModalComponent } from './components/network-form-modal/netwo
     StationsTableComponent,
     MapPageComponent,
     NetworksPageComponent,
-    StationsPageComponent,
     UsersPageComponent,
     NetworkFormModalComponent,
+    NetworkDetailPageComponent,
+    StationDetailPageComponent,
   ],
   imports: [
     CommonModule,
