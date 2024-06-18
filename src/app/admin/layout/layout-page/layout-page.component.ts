@@ -18,9 +18,6 @@ export class LayoutPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.navItems = this.adminRoutesService.getNavItems();
-
-    // Remove settings from the navItems
-    this.navItems = this.navItems.filter(item => item.title !== 'Settings');
   }
 
 
