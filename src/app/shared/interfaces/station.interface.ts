@@ -6,7 +6,7 @@ export interface Station {
   state:       string;
   countryCode: string;
   coordinates: Coordinates;
-  networkId?:  string;
+  networkId:  string;
   createdAt:   Date;
   updatedAt:   Date;
 }
