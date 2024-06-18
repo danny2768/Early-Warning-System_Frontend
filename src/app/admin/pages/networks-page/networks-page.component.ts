@@ -104,23 +104,23 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
 
   nextPage(): void {
     if (this.pagination && this.pagination.next) {
-      this.loadNetworks(this.pagination.page + 1);
+      this.loadNetworks(this.pagination.page + 1, this.limit);
     }
   }
 
   prevPage(): void {
     if (this.pagination && this.pagination.prev) {
-      this.loadNetworks(this.pagination.page - 1);
+      this.loadNetworks(this.pagination.page - 1, this.limit);
     }
   }
 
   firstPage(): void {
-    this.loadNetworks(1);
+    this.loadNetworks(1, this.limit);
   }
 
   lastPage(): void {
     if (this.pagination) {
-      this.loadNetworks(this.pagination.totalPages);
+      this.loadNetworks(this.pagination.totalPages, this.limit);
     }
   }
 
