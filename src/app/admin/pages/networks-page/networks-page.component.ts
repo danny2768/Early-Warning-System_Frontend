@@ -16,6 +16,7 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+  public loadComplete: boolean = false;
   public networks: Network[] = [];
   public pagination?: Pagination;
   public limit: 10 | 25 | 50 | 100 = 10;
@@ -63,6 +64,8 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
       next: resp => {
         this.networks = resp.networks;
         this.pagination = resp.pagination;
+
+        this.loadComplete = true;
       },
       error: err => {
         this.displayDialog('Error', 'An error occurred while loading the networks. Please try again later.');
