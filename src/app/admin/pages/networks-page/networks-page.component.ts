@@ -3,22 +3,9 @@ import { AdminService } from '../../services/admin.service';
 import { Network } from '../../../shared/interfaces/network.interface';
 import { Pagination } from '../../../shared/interfaces/pagination.interface';
 import { Subject, takeUntil } from 'rxjs';
+import { YesNoDialogOptions } from '../../interfaces/yes-no-dialog-options.interface';
+import { FormDialogInfo } from '../../interfaces/form-dialog-info.interface';
 
-interface YesNoDialogOptions {
-  title: string;
-  description: string;
-  acceptButtonText: string;
-  discardButtonText: string;
-  acceptEvent: () => void;
-  discardEvent: () => void;
-}
-
-interface FormDialogInfo {
-  showdialog: boolean;
-  title: string;
-  action: 'create' | 'update';
-  network?: Network;
-}
 
 @Component({
   selector: 'app-networks-page',
@@ -76,7 +63,6 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
       next: resp => {
         this.networks = resp.networks;
         this.pagination = resp.pagination;
-        console.log(this.pagination.totalPages);
       },
       error: err => {
         this.displayDialog('Error', 'An error occurred while loading the networks. Please try again later.');
