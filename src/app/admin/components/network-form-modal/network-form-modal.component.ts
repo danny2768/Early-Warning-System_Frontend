@@ -94,10 +94,11 @@ export class NetworkFormModalComponent implements OnInit, OnDestroy{
         return true;
       },
       error: err => {
-        if ( err.error.error ) this.displayDialog('Error', `${err.error.error}.`);
-        else this.displayDialog('Error', `An unknown error occurred while creating the network. Please try again later.`);
-        // console.error(err);
-
+        if ( err.error.error ) {
+          this.displayDialog('Error', err.error.error);
+        } else {
+          this.displayDialog('Error', 'An error occurred while creating the network. Please try again later.');
+        }
         return false;
       }
     });
@@ -114,10 +115,11 @@ export class NetworkFormModalComponent implements OnInit, OnDestroy{
         return true;
       },
       error: (err: HttpErrorResponse) => {
-        if (err.error.error ) this.displayDialog('Error', `${err.error.error}.`);
-        else this.displayDialog('Error', `An unknown error occurred while updating the network. Please try again later.`);
-        // console.error(err);
-
+        if ( err.error.error ) {
+          this.displayDialog('Error', err.error.error);
+        } else {
+          this.displayDialog('Error', 'An error occurred while updating the network. Please try again later.');
+        }
         return false;
       }
     });
