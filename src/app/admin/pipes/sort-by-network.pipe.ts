@@ -6,25 +6,25 @@ import { Network } from '../../shared/interfaces/network.interface';
 })
 export class SortByNetworkPipe implements PipeTransform {
 
-  transform(spots: Network[], sortBy?: keyof Network): Network[] {
+  transform(networks: Network[], sortBy?: keyof Network): Network[] {
     switch (sortBy) {
       case 'id':
-        return spots.sort((a, b) => (a.id > b.id ? 1 : -1));
+        return networks.sort((a, b) => (a.id > b.id ? 1 : -1));
 
       case 'name':
-        return spots.sort((a, b) => (a.name > b.name ? 1 : -1));
+        return networks.sort((a, b) => (a.name > b.name ? 1 : -1));
 
       case 'description':
-        return spots.sort((a, b) => (a.description > b.description ? 1 : -1));
+        return networks.sort((a, b) => (a.description > b.description ? 1 : -1));
 
       case 'createdAt':
-        return spots.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
+        return networks.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
 
       case 'updatedAt':
-        return spots.sort((a, b) => (a.updatedAt > b.updatedAt ? 1 : -1));
+        return networks.sort((a, b) => (a.updatedAt > b.updatedAt ? 1 : -1));
 
       default:
-        return spots;
+        return networks;
     }
   }
 }
