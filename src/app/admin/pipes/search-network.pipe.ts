@@ -15,6 +15,7 @@ export class SearchNetworkPipe implements PipeTransform {
     if (!networks || !searchText) {
       return networks;
     }
+    searchText = searchText.toLowerCase();
     return networks.filter(network =>
       network.id.toString().includes(searchText) ||
       network.name.toLowerCase().includes(searchText.toLowerCase()) ||
