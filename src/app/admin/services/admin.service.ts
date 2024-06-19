@@ -56,8 +56,8 @@ export class AdminService {
     return this.http.get<Station>(`${this.baseUrl}/api/stations/${id}`);
   }
 
-  getStationsByNetworkId( networkId: string ) {
-    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/by-network/${networkId}`);
+  getStationsByNetworkId( networkId: string, page: number = 1, limit: number = 10 ) {
+    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/by-network/${networkId}?page=${page}&limit=${limit}`);
   }
 
   createStation( station: Station ) {

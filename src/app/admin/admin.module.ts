@@ -16,6 +16,9 @@ import { SortByNetworkPipe } from './pipes/sort-by-network.pipe';
 import { NetworkFormModalComponent } from './components/network-form-modal/network-form-modal.component';
 import { NetworkDetailPageComponent } from './pages/network-detail-page/network-detail-page.component';
 import { StationDetailPageComponent } from './pages/station-detail-page/station-detail-page.component';
+import { SortByStationPipe } from './pipes/sort-by-station.pipe';
+import { SearchStationPipe } from './pipes/search-station.pipe';
+import { StationFormModalComponent } from './components/station-form-modal/station-form-modal.component';
 
 
 @NgModule({
@@ -23,6 +26,8 @@ import { StationDetailPageComponent } from './pages/station-detail-page/station-
     // Pipes
     SearchNetworkPipe,
     SortByNetworkPipe,
+    SortByStationPipe,
+    SearchStationPipe,
 
     // Components
     LayoutPageComponent,
@@ -35,6 +40,7 @@ import { StationDetailPageComponent } from './pages/station-detail-page/station-
     NetworkFormModalComponent,
     NetworkDetailPageComponent,
     StationDetailPageComponent,
+    StationFormModalComponent,
   ],
   imports: [
     CommonModule,

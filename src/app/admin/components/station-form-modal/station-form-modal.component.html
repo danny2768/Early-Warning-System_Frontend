@@ -1,0 +1,208 @@
+<div class="font-[Inter] fixed z-10 inset-0 overflow-y-auto w-full pt-10 md:pt-7" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 w-full">
+    <div
+      (click)="onClose()"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      aria-hidden="true"
+    ></div>
+    <span
+      class="hidden sm:inline-block sm:align-middle sm:h-screen"
+      aria-hidden="true"
+      >&#8203;</span
+    >
+    <div
+      (click)="$event.stopPropagation()"
+      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+    >
+      <div class="bg-white px-4 pt-4 md:pt-2 md:pb-2 w-full">
+        <div class="sm:flex sm:items-start sm:justify-center w-full">
+          <div class="mt-0 md:mt-3 text-center mb-5 md:mb-2 px-2 sm:text-left w-full">
+            @if (showForm) {
+              <!-- Title -->
+              <div
+                class="text-lg md:text-2xl leading-6 font-medium text-gray-800 text-center"
+                id="modal-title"
+              >
+                {{ title | titlecase }}
+              </div>
+              <!-- Content -->
+              <div class="mt-2 flex justify-items-center">
+                <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="w-full">
+                  <!-- Name -->
+                  <div>
+                    <div class="flex justify-between">
+                      <label
+                        for="name"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Name:</label
+                      >
+                      <span
+                        *ngIf="isFieldInvalid('name')"
+                        class="text-sm text-red-500 italic"
+                      >
+                        *{{ getFieldError("name") }}
+                      </span>
+                    </div>
+                    <input
+                      id="name"
+                      type="text"
+                      placeholder="Enter name"
+                      class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
+                      formControlName="name"
+                    />
+                  </div>
+
+                  <!-- State -->
+                  <div class="mt-3">
+                    <div class="flex justify-between">
+                      <label
+                        for="state"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >State:</label
+                      >
+                      <span
+                        *ngIf="isFieldInvalid('state')"
+                        class="text-sm text-red-500 italic"
+                      >
+                        *{{ getFieldError("state") }}
+                      </span>
+                    </div>
+                    <input
+                      id="state"
+                      type="text"
+                      placeholder="Enter state"
+                      class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
+                      formControlName="state"
+                    />
+                  </div>
+
+                  <!-- countryCode -->
+                  <div class="mt-3">
+                    <div class="flex justify-between">
+                      <label
+                        for="countryCode"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Country code:</label
+                      >
+                      <span
+                        *ngIf="isFieldInvalid('countryCode')"
+                        class="text-sm text-red-500 italic"
+                      >
+                        *{{ getFieldError("countryCode") }}
+                      </span>
+                    </div>
+                    <input
+                      id="countryCode"
+                      type="text"
+                      placeholder="Enter countryCode"
+                      class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
+                      formControlName="countryCode"
+                    />
+                  </div>
+
+                  <!-- latitude -->
+                  <div class="mt-3">
+                    <div class="flex justify-between">
+                      <label
+                        for="latitude"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Latitude:</label
+                      >
+                      <span
+                        *ngIf="isFieldInvalid('latitude')"
+                        class="text-sm text-red-500 italic"
+                      >
+                        *{{ getFieldError("latitude") }}
+                      </span>
+                    </div>
+                    <input
+                      id="latitude"
+                      type="number"
+                      placeholder="Enter latitude"
+                      class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
+                      formControlName="latitude"
+                    />
+                  </div>
+
+                  <!-- longitude -->
+                  <div class="mt-3">
+                    <div class="flex justify-between">
+                      <label
+                        for="longitude"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Longitude:</label
+                      >
+                      <span
+                        *ngIf="isFieldInvalid('longitude')"
+                        class="text-sm text-red-500 italic"
+                      >
+                        *{{ getFieldError("longitude") }}
+                      </span>
+                    </div>
+                    <input
+                      id="longitude"
+                      type="number"
+                      placeholder="Enter longitude"
+                      class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
+                      formControlName="longitude"
+                    />
+                  </div>
+
+                  <!-- Hidden submit button to allow the user to submit the form on key enter -->
+                  <div class="hidden">
+                    <button type="submit" class="hidden"></button>
+                  </div>
+
+                </form>
+              </div>
+            } @else {
+              <!-- Title -->
+              <h3
+                class="text-lg leading-6 font-medium text-gray-900"
+                id="modal-title"
+              >
+                {{ dialogMessage.title | titlecase }}
+              </h3>
+              <!-- Content -->
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">{{ dialogMessage.description }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="bg-gray-50 px-4 pb-3 sm:px-6 sm:flex sm:flex-row-reverse">
+        @if (showForm) {
+          <!-- Submit button -->
+          <div class="text-center flex gap-2 w-full">
+            <button
+              type="submit"
+              class="bg-[#39e554] hover:bg-[#33cc4b] text-white font-bold py-2 px-4 rounded w-full"
+              (click)="onSubmit()"
+            >
+              {{ action | titlecase }}
+            </button>
+            <button
+              type="button"
+              class="bg-[#FF4040] hover:bg-[#e53935] text-white font-bold py-2 px-4 rounded w-full"
+              (click)="onClose()"
+            >
+              Cancel
+            </button>
+          </div>
+        } @else {
+          <button
+            type="button"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#39e554] text-base font-medium text-white hover:bg-[#33cc4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 sm:ml-3 sm:w-auto sm:text-sm"
+            (click)="onClose()"
+          >
+            Close
+          </button>
+        }
+      </div>
+
+    </div>
+  </div>
+</div>
