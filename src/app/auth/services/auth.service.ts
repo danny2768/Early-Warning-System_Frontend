@@ -53,7 +53,7 @@ export class AuthService {
   public isAdminAuthenticated(): boolean {
     const token = this.cookieService.get('token');
     const roles = this.cookieService.get('role')?.split(',') || [];
-    return token && roles.includes('ADMIN_ROLE') ? true : false;
+    return token && (roles.includes('ADMIN_ROLE') || roles.includes('SUPER_ADMIN_ROLE')) ? true : false;
   }
 
   public isUserAuthenticated(): boolean {

@@ -48,7 +48,7 @@ export class LoginFormComponent {
           return false;
         }
 
-        if (resp.user.role.includes('ADMIN_ROLE')) {
+        if ( resp.user.role.includes('ADMIN_ROLE') || resp.user.role.includes('SUPER_ADMIN_ROLE')) {
           this.router.navigate(['/admin']);
           return true;
         }
