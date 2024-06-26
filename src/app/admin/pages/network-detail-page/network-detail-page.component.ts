@@ -144,7 +144,12 @@ export class NetworkDetailPageComponent implements OnInit, OnDestroy{
         this.loadStations( this.pagination?.page, this.pagination?.limit );
       },
       error: err => {
-        this.displayDialog('Error', 'An error occurred while deleting the station. Please try again later.');
+        this.closeYesNoDialog();
+        if ( err.error.error ) {
+          this.displayDialog('Error', err.error.error);
+        } else {
+          this.displayDialog('Error', 'An error occurred while deleting the station. Please try again later.');
+        }
       }
     });
   }
