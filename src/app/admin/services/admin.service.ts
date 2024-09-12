@@ -78,4 +78,16 @@ export class AdminService {
   getUsers( page: number = 1, limit: number = 10 ) {
     return this.http.get<UserResponse>(`${this.baseUrl}/api/users?page=${page}&limit=${limit}`);
   }
+
+  // # Common methods
+
+  copyToClipboard(id: string): void {
+    const textarea = document.createElement('textarea');
+    textarea.value = id;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('ID copied to clipboard');
+  }
 }

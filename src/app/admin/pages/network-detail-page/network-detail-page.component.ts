@@ -74,6 +74,7 @@ export class NetworkDetailPageComponent implements OnInit, OnDestroy{
         this.pagination = stations.pagination;
 
         this.loadComplete = true;
+        console.log('Network and stations loaded', network, stations);
       },
       error: err => {
         switch (err.status) {
@@ -247,5 +248,9 @@ export class NetworkDetailPageComponent implements OnInit, OnDestroy{
     this.orderby = value;
 
     this.closeDropdown(['filterDropdown'])
+  }
+
+  copyToClipboard(id: string): void {
+    this.adminService.copyToClipboard(id);
   }
 }

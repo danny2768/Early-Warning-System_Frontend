@@ -187,4 +187,8 @@ export class NetworksPageComponent implements OnInit, OnDestroy {
     this.closeDropdown(['filterDropdown'])
   }
 
+  copyToClipboard(id: string): void {
+    this.adminService.copyToClipboard(id);
+  }
+
 }

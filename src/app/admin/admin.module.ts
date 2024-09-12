@@ -19,6 +19,7 @@ import { StationDetailPageComponent } from './pages/station-detail-page/station-
 import { SortByStationPipe } from './pipes/sort-by-station.pipe';
 import { SearchStationPipe } from './pipes/search-station.pipe';
 import { StationFormModalComponent } from './components/station-form-modal/station-form-modal.component';
+import { TruncateIdPipe } from './pipes/truncate-id.pipe';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { StationFormModalComponent } from './components/station-form-modal/stati
     NetworkDetailPageComponent,
     StationDetailPageComponent,
     StationFormModalComponent,
+    TruncateIdPipe,
   ],
   imports: [
     CommonModule,
