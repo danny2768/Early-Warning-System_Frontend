@@ -1,16 +1,25 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Station } from '../../../shared/interfaces/station.interface';
 import { AdminService } from '../../services/admin.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Country } from '../../../shared/interfaces/country.interface';
 
 @Component({
   selector: 'admin-station-form-modal',
   templateUrl: './station-form-modal.component.html',
-  styleUrl: './station-form-modal.component.css'
+  styleUrl: './station-form-modal.component.css',
 })
-export class StationFormModalComponent implements OnInit, OnDestroy{
-
+export class StationFormModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   @Input({ required: true })
@@ -41,7 +50,10 @@ export class StationFormModalComponent implements OnInit, OnDestroy{
     countryCode: ['', [Validators.required]],
     latitude: ['', [Validators.required]],
     longitude: ['', [Validators.required]],
+    isVisibleToUser: [true, Validators.required]
   });
+
+  public countries: WritableSignal<Country[]> = signal([]);
 
   constructor(
     private adminService: AdminService,
@@ -49,8 +61,8 @@ export class StationFormModalComponent implements OnInit, OnDestroy{
   ) {}
 
   ngOnInit(): void {
-    if ( this.action === 'update' ) {
-      if ( !this.station ) {
+    if (this.action === 'update') {
+      if (!this.station) {
         this.showForm = false;
         this.dialogMessage.description = 'Station not found.';
         return;
@@ -58,15 +70,28 @@ export class StationFormModalComponent implements OnInit, OnDestroy{
       const { coordinates, ...stationWithoutCoordinates } = this.station;
       this.myForm.patchValue(stationWithoutCoordinates);
       this.myForm.patchValue({
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude
-    });
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+      });
     }
+
+    this.getCountries();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  getCountries(): void {
+    this.adminService.getCountries()
+      .subscribe({
+        next: (countries: Country[]) => this.countries.set(countries),
+        error: (err) => {
+          console.error(err);
+          this.displayDialog('Error', 'An error occurred while loading the countries. Please try again later.');
+        }
+      });
   }
 
   onSubmit(): boolean {
@@ -78,7 +103,7 @@ export class StationFormModalComponent implements OnInit, OnDestroy{
 
     let coordinates = {
       latitude: this.myForm.value.latitude,
-      longitude: this.myForm.value.longitude
+      longitude: this.myForm.value.longitude,
     };
 
     let station = {
@@ -86,74 +111,87 @@ export class StationFormModalComponent implements OnInit, OnDestroy{
       state: this.myForm.value.state,
       countryCode: this.myForm.value.countryCode,
       networkId: this.networkId,
-      coordinates
+      coordinates,
+      isVisibleToUser: this.myForm.value.isVisibleToUser
     } as Station;
 
-    if ( this.action === 'create' ) {
-      return this.createStation( station );
+    if (this.action === 'create') {
+      return this.createStation(station);
     }
 
-    if ( this.action === 'update' ) {
-      if ( !this.station ) {
+    if (this.action === 'update') {
+      if (!this.station) {
         this.displayDialog('Error', 'Station not found.');
         return false;
       }
 
       station = { ...this.station, ...station };
-      return this.updateStation( station );
+      return this.updateStation(station);
     }
 
     return false;
   }
 
-  private createStation( station: Station ): boolean {
-    this.adminService.createStation( station ).pipe(takeUntil(this.destroy$)).subscribe({
-      next: resp => {
-        this.displayDialog('Success', 'Station created successfully');
-        this.myForm.reset();
+  private createStation(station: Station): boolean {
+    this.adminService
+      .createStation(station)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (resp) => {
+          this.displayDialog('Success', 'Station created successfully');
+          this.myForm.reset();
 
-        return true;
-      },
-      error: err => {
-        console.error(err);
-        if ( err.error.error ) {
-          this.displayDialog('Error', err.error.error);
-        } else {
-          this.displayDialog('Error', 'An error occurred while creating the station. Please try again later.');
-        }
-        return false;
-      }
-    });
-
-    return false;
-  }
-
-  private updateStation( station: Station ) {
-    this.adminService.updateStation( station ).pipe(takeUntil(this.destroy$)).subscribe({
-      next: resp => {
-        this.displayDialog('Success', 'Station updated successfully');
-        this.myForm.reset();
-
-        return true;
-      },
-      error: err => {
-        if ( err.error.error ) {
-          this.displayDialog('Error', err.error.error);
-        } else {
-          this.displayDialog('Error', 'An error occurred while updating the station. Please try again later.');
-        }
-        return false;
-      }
-    });
+          return true;
+        },
+        error: (err) => {
+          console.error(err);
+          if (err.error.error) {
+            this.displayDialog('Error', err.error.error);
+          } else {
+            this.displayDialog(
+              'Error',
+              'An error occurred while creating the station. Please try again later.'
+            );
+          }
+          return false;
+        },
+      });
 
     return false;
   }
 
-  onClose( ) {
+  private updateStation(station: Station) {
+    this.adminService
+      .updateStation(station)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (resp) => {
+          this.displayDialog('Success', 'Station updated successfully');
+          this.myForm.reset();
+
+          return true;
+        },
+        error: (err) => {
+          if (err.error.error) {
+            this.displayDialog('Error', err.error.error);
+          } else {
+            this.displayDialog(
+              'Error',
+              'An error occurred while updating the station. Please try again later.'
+            );
+          }
+          return false;
+        },
+      });
+
+    return false;
+  }
+
+  onClose() {
     this.closeEvent.emit();
   }
 
-  displayDialog( title: string, message: string):void {
+  displayDialog(title: string, message: string): void {
     this.dialogMessage.title = title;
     this.dialogMessage.description = message;
     this.showForm = false;

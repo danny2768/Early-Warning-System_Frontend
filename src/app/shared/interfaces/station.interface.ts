@@ -9,4 +9,5 @@ export interface Station {
   networkId:  string;
   createdAt:   Date;
   updatedAt:   Date;
+  isVisibleToUser: boolean;
 }

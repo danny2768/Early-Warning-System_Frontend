@@ -79,25 +79,25 @@
                   <!-- countryCode -->
                   <div class="mt-3">
                     <div class="flex justify-between">
-                      <label
-                        for="countryCode"
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Country code:</label
-                      >
-                      <span
-                        *ngIf="isFieldInvalid('countryCode')"
-                        class="text-sm text-red-500 italic"
-                      >
+                      <label for="countryCode" class="block text-sm font-medium text-gray-700 mb-1">
+                        Country:
+                      </label>
+                      <span *ngIf="isFieldInvalid('countryCode')" class="text-sm text-red-500 italic">
                         *{{ getFieldError("countryCode") }}
                       </span>
                     </div>
-                    <input
+                    <select
                       id="countryCode"
-                      type="text"
-                      placeholder="Enter countryCode"
                       class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
                       formControlName="countryCode"
-                    />
+                    >
+                      <option value="" disabled selected>Select a country</option>
+                      @for (country of countries(); track $index) {
+                        <option [value]="country.iso3">
+                          {{ country.name }}
+                        </option>
+                      }
+                    </select>
                   </div>
 
                   <!-- latitude -->
@@ -146,6 +146,26 @@
                       class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
                       formControlName="longitude"
                     />
+                  </div>
+
+                  <div class="mt-3">
+                    <div class="flex justify-between">
+                      <label for="isVisibleToUser" class="block text-sm font-medium text-gray-700 mb-1">
+                        Visible to User Role:
+                      </label>
+                      <span *ngIf="isFieldInvalid('isVisibleToUser')" class="text-sm text-red-500 italic">
+                        *{{ getFieldError("isVisibleToUser") }}
+                      </span>
+                    </div>
+                    <select
+                      id="isVisibleToUser"
+                      class="bg-[#EAF0F7] p-3 rounded shadow-md w-full"
+                      formControlName="isVisibleToUser"
+                    >
+                      <option value="" disabled selected>Select visibility</option>
+                      <option [value]="true">True</option>
+                      <option [value]="false">False</option>
+                    </select>
                   </div>
 
                   <!-- Hidden submit button to allow the user to submit the form on key enter -->
