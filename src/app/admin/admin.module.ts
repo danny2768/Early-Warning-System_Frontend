@@ -20,6 +20,8 @@ import { SortByStationPipe } from './pipes/sort-by-station.pipe';
 import { SearchStationPipe } from './pipes/search-station.pipe';
 import { StationFormModalComponent } from './components/station-form-modal/station-form-modal.component';
 import { TruncateIdPipe } from './pipes/truncate-id.pipe';
+import { SortByUserPipe } from './pipes/sort-by-user.pipe';
+import { SearchUserPipe } from './pipes/search-user.pipe';
 
 
 @NgModule({
@@ -43,6 +45,8 @@ import { TruncateIdPipe } from './pipes/truncate-id.pipe';
     StationDetailPageComponent,
     StationFormModalComponent,
     TruncateIdPipe,
+    SortByUserPipe,
+    SearchUserPipe,
   ],
   imports: [
     CommonModule,

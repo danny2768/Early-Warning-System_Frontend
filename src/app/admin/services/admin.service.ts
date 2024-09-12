@@ -7,6 +7,7 @@ import { UserResponse } from '../interfaces/users-resp.interface';
 import { Network } from '../../shared/interfaces/network.interface';
 import { Station } from '../../shared/interfaces/station.interface';
 import { Country } from '../../shared/interfaces/country.interface';
+import { User } from '../../shared/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +79,18 @@ export class AdminService {
   // # Users requests
   getUsers( page: number = 1, limit: number = 10 ) {
     return this.http.get<UserResponse>(`${this.baseUrl}/api/users?page=${page}&limit=${limit}`);
+  }
+
+  updateUser( user: Partial<User> ) {
+    return this.http.put<User>(`${this.baseUrl}/api/users/${user.id}`, user);
+  }
+
+  getUserById( id: string ) {
+    return this.http.get<User>(`${this.baseUrl}/api/users/${id}`);
+  }
+
+  deleteUser( id: string ) {
+    return this.http.delete(`${this.baseUrl}/api/users/${id}`);
   }
 
   // # Countries
