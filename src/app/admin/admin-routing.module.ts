@@ -7,6 +7,7 @@ import { NetworksPageComponent } from './pages/networks-page/networks-page.compo
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { StationDetailPageComponent } from './pages/station-detail-page/station-detail-page.component';
 import { NetworkDetailPageComponent } from './pages/network-detail-page/network-detail-page.component';
+import { NotFoundComponent } from '../shared/pages/not-found/not-found.component';
 
 
 const routes: Routes = [
@@ -26,9 +27,10 @@ const routes: Routes = [
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
-      }
+      },
     ]
-  }
+  },
+  { path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({

@@ -1,1 +1,17 @@
-<p>station-detail-page works!</p>
+@if (onLoadError.display) {
+  <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-12 absolute inset-0">
+    <div class="m-auto flex flex-col md:flex-row justify-center items-center gap-4">
+      <img src="/assets/icons/undraw-warning.svg" alt="Error" class="w-40 md:w-72">
+      <div class="text-gray-500 w-60 flex flex-col gap-4">
+        <p class="text-xl"> {{ onLoadError.title }} </p>
+        <p class="text-base"> {{ onLoadError.description }} </p>
+        <button [routerLink]="[getNetworkMainPageRoute()]" class="bg-[#37da4f] hover:bg-[#30c045] text-white text-sm font-bold py-2 px-4 rounded button-popup-animation">
+          Go back to Networks
+        </button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <p>station-detail-page works!</p>
+  <div>{{ station | json }}</div>
+}

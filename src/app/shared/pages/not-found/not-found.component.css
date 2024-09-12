@@ -1,0 +1,8 @@
+.background {
+  width: 100vw;
+  min-height: 100vh;
+  background-size: cover; /* or "contain" depending on what you want */
+  background-position: center center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-image: url('/assets/backgrounds/authbg.jpg')
+}
