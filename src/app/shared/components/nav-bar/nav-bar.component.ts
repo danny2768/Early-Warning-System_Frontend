@@ -1,6 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { NavItem } from '../../interfaces/nav-item.interface';
 import gsap from 'gsap';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'shared-nav-bar',
@@ -16,6 +17,8 @@ export class NavBarComponent {
 
   private navHidden: boolean = false;
   private lastScrollPosition: number = 0;
+
+  constructor( private authService: AuthService) {}
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
@@ -34,5 +37,9 @@ export class NavBarComponent {
 
   toggleMobileMenu() {
     this.showMobileMenu = !this.showMobileMenu;
+  }
+
+  onLogOut() {
+    this.authService.logout();
   }
 }

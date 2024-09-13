@@ -22,9 +22,9 @@
         }
       </div>
 
-      <!-- User button -->
-      <div class="hidden md:flex">
-        <img src="/assets/icons/Daniel-Cobos-Avatar.png" alt="User avatar" class="w-7 rounded-full">
+      <!-- LogOut button -->
+      <div class="hidden md:flex cursor-pointer hover:stroke-gray-500" (click)="onLogOut()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" class="size-6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/></svg>
       </div>
 
       <!-- Mobile button -->
@@ -50,6 +50,13 @@
             {{navItem.title}}
           </a>
         }
+        <a
+            routerLinkActive="text-black"
+            (click)="onLogOut()"
+            class="block py-4 text-center hover:text-gray-600"
+          >
+            Log Out
+          </a>
       </div>
     }
 
