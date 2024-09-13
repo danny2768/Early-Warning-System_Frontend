@@ -22,6 +22,7 @@ import { StationFormModalComponent } from './components/station-form-modal/stati
 import { TruncateIdPipe } from './pipes/truncate-id.pipe';
 import { SortByUserPipe } from './pipes/sort-by-user.pipe';
 import { SearchUserPipe } from './pipes/search-user.pipe';
+import { UserFormModalComponent } from './components/user-form-modal/user-form-modal.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { SearchUserPipe } from './pipes/search-user.pipe';
     TruncateIdPipe,
     SortByUserPipe,
     SearchUserPipe,
+    UserFormModalComponent,
   ],
   imports: [
     CommonModule,

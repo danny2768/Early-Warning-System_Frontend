@@ -4,6 +4,7 @@ import { User } from '../../../shared/interfaces/user.interface';
 import { Pagination } from '../../../shared/interfaces/pagination.interface';
 import { AdminService } from '../../services/admin.service';
 import { YesNoDialogOptions } from '../../interfaces/yes-no-dialog-options.interface';
+import { FormDialogInfo } from '../../interfaces/form-dialog-info.interface';
 
 @Component({
   selector: 'app-users-page',
@@ -37,6 +38,12 @@ export class UsersPageComponent {
     acceptEvent: () => {},
     discardEvent: () => {},
   };
+
+  public formDialogInfo: FormDialogInfo = {
+    showdialog: false,
+    title: '',
+    action: 'create',
+  }
 
   constructor(
     private adminService: AdminService,
@@ -141,8 +148,26 @@ export class UsersPageComponent {
     }
   }
 
+  displayFormDialog( action: 'create' | 'update', network?: User ): void {
+    if (action === 'update') {
+      this.formDialogInfo.title = 'Update user';
+      this.formDialogInfo.user = network;
+    } else {
+      this.formDialogInfo.title = 'Create user';
+      this.formDialogInfo.user = undefined;
+    }
+
+    this.formDialogInfo.action = action;
+    this.formDialogInfo.showdialog = true;
+  }
+
   closeYesNoDialog(): void {
     this.yesNoDialogInfo.showDialog = false;
+  }
+
+  closeFormDialog(): void {
+    this.formDialogInfo.showdialog = false;
+    this.loadUsers( this.pagination?.page, this.pagination?.limit );
   }
 
   closeDialog(): void {
