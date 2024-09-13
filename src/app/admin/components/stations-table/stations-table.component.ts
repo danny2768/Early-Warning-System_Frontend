@@ -3,6 +3,7 @@ import { AdminService } from '../../services/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Station } from '../../../shared/interfaces/station.interface';
 import { AdminRoutesService } from '../../services/admin-routes.service';
+import { Pagination } from '../../../shared/interfaces/pagination.interface';
 
 @Component({
   selector: 'admin-stations-table',
@@ -14,6 +15,7 @@ export class StationsTableComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   public stations: Station[] = [];
+  public pagination?: Pagination;
 
   public mapRoute = '';
 
@@ -38,16 +40,39 @@ export class StationsTableComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getStations() {
-    this.adminService.getStations().pipe( takeUntil(this.destroy$) )
+  getStations( page: number = 1, limit: number = 4 ): void {
+    this.adminService.getStations( page, limit ).pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
           this.stations = resp.stations;
+          this.pagination = resp.pagination;
         },
         error: (err) => {
           console.log(err);
         }
       })
+  }
+
+  nextPage(): void {
+    if (this.pagination && this.pagination.next) {
+      this.getStations(this.pagination.page + 1, this.pagination.limit);
+    }
+  }
+
+  prevPage(): void {
+    if (this.pagination && this.pagination.prev) {
+      this.getStations(this.pagination.page - 1, this.pagination.limit);
+    }
+  }
+
+  firstPage(): void {
+    this.getStations(1, this.pagination!.limit);
+  }
+
+  lastPage(): void {
+    if (this.pagination) {
+      this.getStations(this.pagination.totalPages, this.pagination.limit);
+    }
   }
 
 }
