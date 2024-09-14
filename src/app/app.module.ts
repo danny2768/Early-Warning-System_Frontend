@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/services/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    provideCharts(withDefaultRegisterables())
   ],
   bootstrap: [AppComponent]
 })
