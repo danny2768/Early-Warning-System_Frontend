@@ -28,7 +28,7 @@ export class AuthService {
     );
   }
 
-  public loginUser( user: User ): Observable<LoginRequest | HttpErrorResponse> {
+  public loginUser( user: User ): Observable<LoginRequest> {
     return this.http.post<LoginRequest>(`${this.baseUrl}/auth/login`, user).pipe(
       map( (resp) => {
         this.cookieService.set('token', resp.token, {
@@ -46,7 +46,6 @@ export class AuthService {
         this.router.navigate(['/']);
         return resp;
       }),
-      catchError( (err: HttpErrorResponse) => of(err))
     );
   }
 
