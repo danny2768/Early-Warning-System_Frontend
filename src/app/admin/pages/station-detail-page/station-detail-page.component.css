@@ -1,0 +1,43 @@
+.normal {
+  color: #0D684B;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #0D684B;
+  border-radius: 4px;
+  background-color: #CDE6DF;
+  padding: 6px 10px;
+  max-width: 100px;
+}
+
+.caution {
+  color: #8B5D13;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #8B5D13;
+  border-radius: 4px;
+  background-color: #FFEECC;
+  padding: 6px 10px;
+  max-width: 100px;
+}
+
+.warning {
+  color: #D9770B;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #D9770B;
+  border-radius: 4px;
+  background-color: #FFD8A8;
+  padding: 6px 10px;
+  max-width: 100px;
+}
+
+.danger {
+  color: #A80521;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #A80521;
+  border-radius: 4px;
+  background-color: #EECDD2;
+  padding: 6px 10px;
+  max-width: 100px;
+}

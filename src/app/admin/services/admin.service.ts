@@ -8,6 +8,8 @@ import { Network } from '../../shared/interfaces/network.interface';
 import { Station } from '../../shared/interfaces/station.interface';
 import { Country } from '../../shared/interfaces/country.interface';
 import { User } from '../../shared/interfaces/user.interface';
+import { Sensor } from '../interfaces/sensor.interface';
+import { GetSensorReadingsResp } from '../interfaces/get-sensor-readings-resp.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +74,15 @@ export class AdminService {
 
   deleteStation( id: string ) {
     return this.http.delete<Station>(`${this.baseUrl}/api/stations/${id}`);
+  }
+
+  // # Sensors requests
+  getSensorsByStationId( stationId: string ) {
+    return this.http.get<Sensor[]>(`${this.baseUrl}/api/sensors/by-station/${stationId}`);
+  }
+
+  getSensorReadings( sensorId: string, page: number = 1, limit: number = 1000000 ) {
+    return this.http.get<GetSensorReadingsResp>(`${this.baseUrl}/api/sensors/${sensorId}/readings?page=${page}&limit=${limit}`);
   }
 
   // # Readings requests

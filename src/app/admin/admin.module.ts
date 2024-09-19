@@ -23,6 +23,9 @@ import { TruncateIdPipe } from './pipes/truncate-id.pipe';
 import { SortByUserPipe } from './pipes/sort-by-user.pipe';
 import { SearchUserPipe } from './pipes/search-user.pipe';
 import { UserFormModalComponent } from './components/user-form-modal/user-form-modal.component';
+import { StationInfoComponent } from './components/station-info/station-info.component';
+import { TimeseriesChartComponent } from './components/timeseries-chart/timeseries-chart.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
@@ -49,6 +52,8 @@ import { UserFormModalComponent } from './components/user-form-modal/user-form-m
     SortByUserPipe,
     SearchUserPipe,
     UserFormModalComponent,
+    StationInfoComponent,
+    TimeseriesChartComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +61,7 @@ import { UserFormModalComponent } from './components/user-form-modal/user-form-m
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
+    NgApexchartsModule,
   ],
   providers: [
     DatePipe,

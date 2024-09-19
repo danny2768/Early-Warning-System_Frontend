@@ -1,9 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concat, concatMap, Subject, takeUntil, tap } from 'rxjs';
+import { concatMap, forkJoin, map, Subject, takeUntil, tap } from 'rxjs';
 import { Station } from '../../../shared/interfaces/station.interface';
 import { AdminRoutesService } from '../../services/admin-routes.service';
+import { StationInfoComponent } from '../../components/station-info/station-info.component';
+import { Sensor, Threshold } from '../../interfaces/sensor.interface';
+import { Reading } from '../../interfaces/reading.interface';
+import { GetSensorReadingsResp } from '../../interfaces/get-sensor-readings-resp.interface';
+
+export interface SensorWithReadings {
+  sensor: Sensor;
+  readings: Reading[];
+}
 
 @Component({
   selector: 'app-station-detail-page',
@@ -15,13 +24,19 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
   private destroy$ = new Subject<void>();
 
   private paramsStationId?: string;
-  public station?: Station;
+  public station: WritableSignal<Station | undefined> = signal(undefined);
+  public sensorsWithReadings: WritableSignal<SensorWithReadings[] | undefined> = signal(undefined);
 
   public onLoadError = {
     display: false,
     title: 'Oops! Something went wrong.',
     description: 'An error occurred while loading the data. Please try again later.'
   }
+
+  selectedTab: 'Data' | 'Graph' = 'Data';
+
+  @ViewChild(StationInfoComponent)
+  stationInfoComponent!: StationInfoComponent;
 
   constructor(
     private adminService: AdminService,
@@ -36,7 +51,10 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
       takeUntil(this.destroy$),
       concatMap(({ id }) => this.adminService.getStationById(id))
     ).subscribe({
-      next: (resp: Station) => this.station = resp,
+      next: (resp: Station) => {
+        this.station.set(resp);
+        this.getSensorsByStationId(resp.id);
+      },
       error: (err) => {
         switch (err.status) {
           case 400:
@@ -61,10 +79,54 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
     this.destroy$.complete();
   }
 
+  getSensorsByStationId(stationId: string): void {
+    this.adminService.getSensorsByStationId(stationId)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (sensors: Sensor[]) => {
+          this.getReadingsForSensors(sensors);
+        },
+        error: (err) => {
+          console.error('Error loading sensors', err);
+          this.displayOnLoadError('Oops! Something went wrong.', 'An error occurred while loading the data. Please try again later.');
+        }
+      });
+  }
 
+  getReadingsForSensors(sensors: Sensor[]): void {
+    const sensorReadings$ = sensors.map(sensor =>
+      this.adminService.getSensorReadings(sensor.id).pipe(
+        takeUntil(this.destroy$),
+        map((resp: GetSensorReadingsResp) => ({
+          sensor,
+          readings: resp.readings
+        }))
+      )
+    );
+
+    forkJoin(sensorReadings$).subscribe({
+      next: (sensorsWithReadings: SensorWithReadings[]) => {
+        this.sensorsWithReadings.set(sensorsWithReadings);
+      },
+      error: (err) => {
+        console.error('Error loading sensor readings', err);
+        this.displayOnLoadError('Oops! Something went wrong.', 'An error occurred while loading the data. Please try again later.');
+      }
+    });
+  }
+
+  // # Side sheet
+  openSideSheet(): void {
+    this.stationInfoComponent.openSideSheet();
+  }
+
+  closeSideSheet(): void {
+    this.stationInfoComponent.closeSideSheet();
+  }
 
   // # Modals
-
   displayOnLoadError( title: string, description: string ): void {
     this.onLoadError.title = title;
     this.onLoadError.description = description;
@@ -74,5 +136,29 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
   // # Navigation
   getNetworkMainPageRoute(): string {
     return this.adminRoutesService.getNetworks().route;
+  }
+
+  // # tabs
+  selectTab(tab: 'Data' | 'Graph') {
+    this.selectedTab = tab;
+  }
+
+  getChartData(readings: Reading[]): { value: number, date: string }[] {
+    return readings.map(reading => ({
+      value: reading.value,
+      date: reading.createdAt as unknown as string
+    }));
+  }
+
+  getStatus(reading: Reading, threshold: Threshold): string {
+    if (reading.value >= threshold.red) {
+      return 'danger';
+    } else if (reading.value >= threshold.orange) {
+      return 'warning';
+    } else if (reading.value >= threshold.yellow) {
+      return 'caution';
+    } else {
+      return 'normal';
+    }
   }
 }

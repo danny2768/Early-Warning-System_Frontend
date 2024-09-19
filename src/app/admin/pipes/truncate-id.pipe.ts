@@ -5,8 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TruncateIdPipe implements PipeTransform {
 
-  transform(value: string): string {
-    const truncatedId = value ? value.slice(-4) : '';
+  transform(value: string | undefined): string {
+    if (value === undefined || value === null) {
+      return '...';
+    }
+    const truncatedId = value.slice(-4);
     return `...${truncatedId}`;
   }
 

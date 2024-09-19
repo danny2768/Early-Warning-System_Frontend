@@ -1,0 +1,79 @@
+<div class="drawer drawer-end z-[50]">
+  <input #drawerToggle id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-side">
+    <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="bg-white text-base-content min-h-full sm:w-[480px] p-6">
+      <!-- Sidebar content here -->
+      <div>
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-base-300 pb-1">
+          <!-- Title -->
+          <div class="text-2xl font-bold text-gray-800 select-none">
+            Station information
+          </div>
+          <!-- Close button -->
+          <div class="mr-2" (click)="closeSideSheet()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              fill="none"
+            >
+              <path
+                fill="#808080"
+                d="M14 1.41 12.59 0 7 5.59 1.41 0 0 1.41 5.59 7 0 12.59 1.41 14 7 8.41 12.59 14 14 12.59 8.41 7 14 1.41Z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="mt-5">
+          <!-- Title -->
+          <div class="text-lg font-bold">
+            {{ station()?.name }}
+          </div>
+          <!-- Content -->
+          <div class="p-4">
+            <!-- Container -->
+            <div class="bg-gray-100 p-4">
+              <!-- Title -->
+              <div class="font-bold pb-1 border-b border-gray-300">Basic information</div>
+              <!-- Content -->
+              <div class="flex flex-col gap-1 mt-4">
+                <div>
+                  <span><strong>Country: </strong></span>
+                  <span>{{ station()?.countryCode }}</span>
+                </div>
+                <div>
+                  <span><strong>State: </strong></span>
+                  <span>{{ station()?.state }}</span>
+                </div>
+                <div>
+                  <span><strong>User visible: </strong></span>
+                  <span>{{ station()?.isVisibleToUser }}</span>
+                </div>
+                <div class="my-4">
+                  <div><strong>Coordinates: </strong></div>
+                  <ul class="list-disc pl-6">
+                    <li><strong>Longitude: </strong>{{ station()?.coordinates?.longitude }}</li>
+                    <li><strong>Latitude: </strong>{{ station()?.coordinates?.latitude }}</li>
+                  </ul>
+                </div>
+                <div>
+                  <span><strong>Created At: </strong></span>
+                  <span>{{ station()?.createdAt | date: 'short' }}</span>
+                </div>
+                <div>
+                  <span><strong>Updated At: </strong></span>
+                  <span>{{ station()?.updatedAt | date: 'short' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ul>
+  </div>
+</div>

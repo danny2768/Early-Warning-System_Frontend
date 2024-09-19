@@ -20,18 +20,18 @@ export class NavBarComponent {
 
   constructor( private authService: AuthService) {}
 
-  @HostListener('window:scroll', ['$event'])
+  // @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    const currentScrollPosition = window.pageYOffset;
-    if (currentScrollPosition < this.lastScrollPosition) {
-      this.navHidden = false; // Scrolling up
-    } else {
-      this.navHidden = true; // Scrolling down
-      this.showMobileMenu = false; // Hide mobile menu when scrolling down
-    }
-    this.lastScrollPosition = currentScrollPosition;
+    // const currentScrollPosition = window.pageYOffset;
+    // if (currentScrollPosition < this.lastScrollPosition) {
+    //   this.navHidden = false; // Scrolling up
+    // } else {
+    //   this.navHidden = true; // Scrolling down
+    //   this.showMobileMenu = false; // Hide mobile menu when scrolling down
+    // }
+    // this.lastScrollPosition = currentScrollPosition;
 
-    gsap.to('#navbar', { duration: 0.5, y: this.navHidden ? -100 : 0 });
+    // gsap.to('#navbar', { duration: 0.5, y: this.navHidden ? -100 : 0 });
   }
 
 
