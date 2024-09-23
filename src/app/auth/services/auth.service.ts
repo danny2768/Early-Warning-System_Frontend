@@ -43,6 +43,11 @@ export class AuthService {
           sameSite: 'Strict',
           path: '/'
         });
+        this.cookieService.set('user', JSON.stringify(resp.user), {
+          expires: 1,
+          secure: true,
+          sameSite: 'Strict',
+        });
         this.router.navigate(['/']);
         return resp;
       }),
@@ -67,4 +72,10 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
+  public getUser(): User | undefined {
+    const userCookie = this.cookieService.get('user');
+    if (!userCookie) return undefined;
+
+    return JSON.parse(userCookie);
+  }
 }

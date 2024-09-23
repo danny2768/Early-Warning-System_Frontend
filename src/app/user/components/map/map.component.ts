@@ -1,17 +1,22 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
-import { environments } from '../../../../environments/environment';
-import { LngLat, LngLatBounds, Map, Marker, Popup } from 'mapbox-gl';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MapStyle } from '../../../shared/interfaces/map-style.type';
 import { Station } from '../../../shared/interfaces/station.interface';
+import { LngLat, LngLatBounds, Map, Marker, Popup } from 'mapbox-gl';
 import { Router } from '@angular/router';
+import { environments } from '../../../../environments/environment';
+import { AuthService } from '../../../auth/services/auth.service';
+import { User } from '../../../shared/interfaces/user.interface';
+import { UserService } from '../../services/user.service';
+import { Subject, takeUntil } from 'rxjs';
+import { CreateSubscription } from '../../../shared/interfaces/create-subscription.interface';
 
 @Component({
-  selector: 'admin-map',
+  selector: 'user-map',
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
 export class MapComponent implements AfterViewInit, OnChanges {
+  private destroy$ = new Subject<void>();
 
   @Input()
   public style: MapStyle = 'standard';
@@ -43,7 +48,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   constructor(
-    private adminService: AdminService,
+    private userService: UserService,
+    private authService: AuthService,
     private router: Router,
   ) {}
 
@@ -65,11 +71,6 @@ export class MapComponent implements AfterViewInit, OnChanges {
     if (changes['zoom'] && !changes['zoom'].isFirstChange()) {
       this.map?.zoomTo(this.zoom);
     }
-  }
-
-  updateMapStyle(): void {
-    const newStyle = this.availableStyles[this.style.toLowerCase()];
-    this.map?.setStyle(newStyle);
   }
 
   buildMap(): void {
@@ -97,16 +98,15 @@ export class MapComponent implements AfterViewInit, OnChanges {
     });
   }
 
-  displayDialog( title: string, description: string): void {
-    this.dialogInfo = {
-      showDialog: true,
-      title,
-      description
-    }
+  updateMapStyle(): void {
+    const newStyle = this.availableStyles[this.style.toLowerCase()];
+    this.map?.setStyle(newStyle);
   }
 
-  closeDialog(): void {
-    this.dialogInfo.showDialog = false;
+
+  deleteActiveMarkers() {
+    this.mapMarkers.forEach(marker => marker.remove());
+    this.mapMarkers = [];
   }
 
   addStationsMarkers(stations: Station[]): void {
@@ -149,23 +149,42 @@ export class MapComponent implements AfterViewInit, OnChanges {
         </div>
 
         <button id="view-details-btn" class="bg-blue-500 text-white text-base font-semibold py-1 px-4 rounded-box w-full select-none"">
-          <a>View details</a>
+          <a>Subscribe</a>
         </button>
       `);
 
     // Add event listener to the button
     popup.on('open', () => {
-      document.getElementById('view-details-btn')?.addEventListener('click', () => {
-        this.router.navigate(['/admin/station-detail', station.id]);
+      const button = document.getElementById('view-details-btn');
+
+      if (!button) return;
+
+      const user = this.getUser();
+      if (!user) {
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      button.addEventListener('click', () => {
+        this.subscribeToStation(station.id);
+        button.innerHTML = 'Subscribed!';
       });
     });
 
     return popup;
   }
 
-  deleteActiveMarkers() {
-    this.mapMarkers.forEach(marker => marker.remove());
-    this.mapMarkers = [];
+  private subscribeToStation(stationId: string): void {
+    this.userService.addSubscription(stationId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (resp) => {
+          this.displayDialog('Success', 'You have successfully subscribed to the station.');
+        },
+        error: (error) => {
+          this.displayDialog('Error', 'An error occurred while subscribing to the station. Please try again later.');
+        }
+      });
   }
 
   zoomToAllMarkers() {
@@ -188,4 +207,24 @@ export class MapComponent implements AfterViewInit, OnChanges {
   public getCurrentZoom(): number {
     return this.map?.getZoom() || this.zoom;
   }
+
+
+  // # Dialog methods
+  displayDialog( title: string, description: string): void {
+    this.dialogInfo = {
+      showDialog: true,
+      title,
+      description
+    }
+  }
+
+  closeDialog(): void {
+    this.dialogInfo.showDialog = false;
+  }
+
+  // # User methods
+  private getUser(): User | undefined {
+    return this.authService.getUser()
+  }
+
 }

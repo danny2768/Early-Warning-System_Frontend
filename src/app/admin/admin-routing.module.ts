@@ -21,8 +21,6 @@ const routes: Routes = [
       { path: 'networks/:id', component: NetworkDetailPageComponent },
       { path: 'station-detail/:id', component: StationDetailPageComponent },
       { path: 'users', component: UsersPageComponent },
-      // TODO: create settings page
-      { path: 'settings', component: MapPageComponent },
       {
         path: '',
         redirectTo: 'dashboard',

@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MapStyle, MapStyleEnum } from '../../interfaces/map-style.type';
+import { MapStyle, MapStyleEnum } from '../../../shared/interfaces/map-style.type';
 import { AdminService } from '../../services/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Network } from '../../../shared/interfaces/network.interface';
@@ -70,7 +70,7 @@ export class MapPageComponent implements OnInit, OnDestroy {
     }
   }
 
-ngOnInit(): void {
+  ngOnInit(): void {
   // Subscribe to the route's query parameters & destructure the stationId from the query parameters
   this.route.queryParams.subscribe(params => {
     const { stationId } = params;

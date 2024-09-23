@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environments } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NetworkResponse } from '../interfaces/network-resp.interface';
-import { StationResponse } from '../interfaces/stations-resp.interface';
+import { StationResponse } from '../../shared/interfaces/stations-resp.interface';
 import { UserResponse } from '../interfaces/users-resp.interface';
 import { Network } from '../../shared/interfaces/network.interface';
 import { Station } from '../../shared/interfaces/station.interface';
