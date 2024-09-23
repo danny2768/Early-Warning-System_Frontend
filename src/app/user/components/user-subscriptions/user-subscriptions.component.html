@@ -1,1 +1,64 @@
-<p>user-subscriptions works!</p>
+@if ( dialogInfo.showDialog ) {
+  <shared-modal-dialog
+    [title]="dialogInfo.title"
+    [description]="dialogInfo.description"
+    (closeEvent)="closeDialog()">
+  </shared-modal-dialog>
+}
+
+<div class="rounded-lg border-2 border-[#e5e7eb] min-h-[550px] max-h-[800px] p-8 overflow-auto">
+  <h2 class="flex justify-center text-2xl font-bold text-[#50A060] mb-6">Subscriptions</h2>
+  <div class="overflow-y-auto lg:overflow-x-hidden">
+    <table class="min-w-full table-auto">
+      <thead>
+        <tr class="text-left md:text-center text-[#AF8260] text-shadow-2">
+          <!-- <th class="w-1/7 px-4">Station id</th> -->
+          <th class="w-1/7 px-4">Name</th>
+          <th class="w-1/7 px-4">State</th>
+          <th class="w-1/7 px-4">County code</th>
+          <th class="w-1/7 px-4">Longitude</th>
+          <th class="w-1/7 px-4">Latitude</th>
+          <!-- <th class="w-1/7 px-4">networkId</th> -->
+          <th class="w-1/7 px-4">Created</th>
+          <th class="w-1/7 px-4">Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let station of subscribedStations" class="text-left md:text-center">
+          <!-- <td class="font-bold px-4">{{ station.id }}</td> -->
+          <td class="px-4 py-1">{{ station.name }}</td>
+          <td class="px-4 py-1">{{ station.state }}</td>
+          <td class="px-4 py-1">{{ station.countryCode }}</td>
+          <td class="px-4 py-1">{{ station.coordinates.latitude | number: '1.6-6' }}</td>
+          <td class="px-4 py-1">{{ station.coordinates.longitude | number: '1.6-6' }}</td>
+          <!-- <td class="px-4 py-1">{{ station.networkId }}</td> -->
+          <td class="px-4 py-1">{{ station.createdAt | date }}</td>
+          <td class="px-4 py-1">{{ station.updatedAt | date }}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  @if (subscribedStations.length === 0 && loadComplete() ) {
+    <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-12">
+      <img src="/assets/icons/undraw-empty.svg" alt="Empty" class="w-40 md:w-72">
+      <div class="text-gray-500 w-60 flex flex-col gap-4">
+        <p class="text-xl">Oops! There's nothing to display at the moment.</p>
+        <p class="text-base">Tip: Subscribe to a station to get started!</p>
+      </div>
+    </div>
+  }
+
+   <!-- Pagination -->
+   @if ( pagination && pagination.totalPages > 1) {
+    <div class="join flex justify-center mt-4">
+      <button class="join-item btn tooltip" data-tip="First" [disabled]="pagination.page === 1" (click)="firstPage()">««</button>
+      <button class="join-item btn tooltip" data-tip="Previous" [disabled]="pagination.page === 1" (click)="prevPage()">«</button>
+      <button class="join-item btn">Page {{ pagination.page }} </button>
+      <button class="join-item btn tooltip" data-tip="Next" [disabled]="pagination.page === pagination.totalPages" (click)="nextPage()">»</button>
+      <button class="join-item btn tooltip" data-tip="Last" [disabled]="pagination.page === pagination.totalPages" (click)="lastPage()">»»</button>
+    </div>
+  }
+
+</div>

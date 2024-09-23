@@ -88,7 +88,6 @@ export class UserAccountComponent {
           this.user.set(resp);
         },
         error: (err) => {
-          this.displayDialog('Error', 'An error occurred while updating the user. Please try again later.');
           switch (err.status) {
             case 400:
               const errorMessage: string = err.error.error;

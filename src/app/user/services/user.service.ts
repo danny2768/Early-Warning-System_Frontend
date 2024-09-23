@@ -20,8 +20,12 @@ export class UserService {
     return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/userVisible`);
   }
 
-  public getSubscriptionsUser() {
-    return this.http.get<StationSubscription>(`${this.baseUrl}/api/subscriptions/by-user`);
+  public getSubscribedStations( page: number = 1, limit: number = 10 ) {
+    return this.http.get<StationResponse>(`${this.baseUrl}/api/subscriptions/subscribed-stations?page=${page}&limit=${limit}`);
+  }
+
+  public getUserSubscription( userId: string ) {
+    return this.http.get<StationSubscription>(`${this.baseUrl}/api/subscriptions/by-user/${userId}`);
   }
 
   public addSubscription( stationId: string ) {

@@ -17,7 +17,7 @@
     @if (tabSelector() === 'profile') {
       <user-account [user]="user"></user-account>
     } @else if (tabSelector() === 'subscriptions') {
-      <user-subscriptions></user-subscriptions>
+      <user-subscriptions [user]="user"></user-subscriptions>
     } @else {
       <div>
         Looks like you're lost or the developer forgot to add a component for this tab.
