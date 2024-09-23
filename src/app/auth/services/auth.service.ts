@@ -78,4 +78,16 @@ export class AuthService {
 
     return JSON.parse(userCookie);
   }
+
+  public getSelfUser() {
+    return this.http.get<User>(`${this.baseUrl}/api/users/self`);
+  }
+
+  public updateUser( user: Partial<User> ): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/api/users/${user.id}`, user);
+  }
+
+  public sendValidationEmail() {
+    return this.http.get(`${this.baseUrl}/auth/send-validation-email`);
+  }
 }

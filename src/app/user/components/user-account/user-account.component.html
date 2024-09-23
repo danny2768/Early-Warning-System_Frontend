@@ -1,0 +1,52 @@
+@if ( dialogInfo.showDialog ) {
+  <shared-modal-dialog
+    [title]="dialogInfo.title"
+    [description]="dialogInfo.description"
+    (closeEvent)="closeDialog()">
+  </shared-modal-dialog>
+}
+
+<div class="rounded-lg border-2 border-[#e5e7eb] min-h-[550px] max-h-[800px] p-8 overflow-auto">
+  <h2 class="flex justify-center text-2xl font-bold text-[#50A060] mb-6">User Account</h2>
+  <div class="lg:w-[85%] mx-auto">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-bold text-gray-700">Name</label>
+        <input id="name" formControlName="name" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+        <div *ngIf="isFieldInvalid('name')" class="text-red-500 text-sm">{{ getFieldError('name') }}</div>
+      </div>
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-bold text-gray-700">Email</label>
+        <input id="email" formControlName="email" type="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+        <div *ngIf="isFieldInvalid('email')" class="text-red-500 text-sm">{{ getFieldError('email') }}</div>
+      </div>
+      <div class="mb-4">
+        <label for="role" class="block text-sm font-bold text-gray-700">Role</label>
+        <div id="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100">{{ user()?.role | role }}</div>
+      </div>
+      <div class="mb-4">
+        <label for="phone" class="block text-sm font-bold text-gray-700">Phone</label>
+        <div formGroupName="phone" class="flex gap-2">
+          <div class="w-1/4">
+            <input id="countryCode" formControlName="countryCode" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Country Code" />
+            <div *ngIf="isFieldInvalid('phone.countryCode')" class="text-red-500 text-sm">{{ getFieldError('phone.countryCode') }}</div>
+          </div>
+          <div class="w-3/4">
+            <input id="number" formControlName="number" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Number" />
+            <div *ngIf="isFieldInvalid('phone.number')" class="text-red-500 text-sm">{{ getFieldError('phone.number') }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="emailValidated" class="block text-sm font-bold text-gray-700">Email Validated</label>
+        <div id="emailValidated" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100">{{ user()?.emailValidated ? 'Yes' : 'No' }}</div>
+      </div>
+      <div class="flex justify-end">
+        <button type="submit" class="bg-[#50A060] text-white px-4 py-2 rounded-md">Save</button>
+        @if ( user()?.emailValidated === false) {
+          <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded-md ml-2" (click)="validateEmail()">Validate email</button>
+        }
+      </div>
+    </form>
+  </div>
+</div>

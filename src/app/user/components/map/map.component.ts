@@ -7,13 +7,13 @@ import { environments } from '../../../../environments/environment';
 import { AuthService } from '../../../auth/services/auth.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { UserService } from '../../services/user.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { CreateSubscription } from '../../../shared/interfaces/create-subscription.interface';
 
 @Component({
   selector: 'user-map',
   templateUrl: './map.component.html',
-  styleUrl: './map.component.css'
+  styleUrls: ['./map.component.css']
 })
 export class MapComponent implements AfterViewInit, OnChanges {
   private destroy$ = new Subject<void>();
@@ -159,15 +159,39 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
       if (!button) return;
 
-      const user = this.getUser();
-      if (!user) {
-        this.router.navigate(['/login']);
-        return;
-      }
-
       button.addEventListener('click', () => {
-        this.subscribeToStation(station.id);
-        button.innerHTML = 'Subscribed!';
+        this.getUser().pipe(
+          switchMap(user => {
+            if (!user) {
+              this.displayDialog('Error', 'An error occurred while getting the user. Please try again later.');
+              return of(null);
+            }
+
+            if (!user.phone || !user.phone.countryCode || !user.phone.number) {
+              this.displayDialog('Error', 'You need to set your phone number in order to subscribe to a station.');
+              return of(null);
+            }
+
+            if (user.emailValidated === false) {
+              this.displayDialog('Error', 'You need to validate your email in order to subscribe to a station.');
+              return of(null);
+            }
+
+            return this.userService.addSubscription(station.id).pipe(
+              takeUntil(this.destroy$)
+            );
+          })
+        ).subscribe({
+          next: (resp) => {
+            if (resp) {
+              this.displayDialog('Success', 'You have successfully subscribed to the station.');
+              button.innerHTML = 'Subscribed!';
+            }
+          },
+          error: (error) => {
+            this.displayDialog('Error', 'An error occurred while subscribing to the station. Please try again later.');
+          }
+        });
       });
     });
 
@@ -223,8 +247,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   // # User methods
-  private getUser(): User | undefined {
-    return this.authService.getUser()
+  private getUser() {
+    return this.authService.getSelfUser().pipe(takeUntil(this.destroy$));
   }
-
 }
