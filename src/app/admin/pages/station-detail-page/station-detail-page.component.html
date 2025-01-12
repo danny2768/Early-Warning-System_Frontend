@@ -42,6 +42,27 @@
       </button>
     </div>
 
+    <!-- Place holder for when the station doesnt have sensors -->
+    @if (!sensorsWithReadings()) {
+      <div
+        class="flex flex-col md:flex-row justify-center items-center gap-4 mt-12 absolute inset-0"
+      >
+        <div
+          class="m-auto flex flex-col md:flex-row justify-center items-center gap-4"
+        >
+          <img
+            src="/assets/icons/undraw-empty.svg"
+            alt="Error"
+            class="w-40 md:w-72"
+          />
+          <div class="text-gray-500 w-60 flex flex-col gap-4">
+            <p class="text-xl">No sensors found</p>
+            <p class="text-base">I'm sorry, there are no sensors available for this station.</p>
+          </div>
+        </div>
+      </div>
+    }
+
     <!-- Content -->
     @for (sensorReadings of sensorsWithReadings(); track $index) {
       <div class="collapse collapse-arrow mb-4 border-2 border-[#e5e7eb]">
