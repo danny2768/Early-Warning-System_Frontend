@@ -16,6 +16,7 @@ export class StationsTableComponent implements OnInit, OnDestroy {
 
   public stations: Station[] = [];
   public pagination?: Pagination;
+  public limit: 5 | 10 | 15 = 5;
 
   public mapRoute = '';
 
@@ -25,7 +26,7 @@ export class StationsTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getStations();
+    this.getStations(1, this.limit);
 
     // Get the map route
     this.AdminRoutesService.getNavItems().forEach(item => {
@@ -73,6 +74,19 @@ export class StationsTableComponent implements OnInit, OnDestroy {
     if (this.pagination) {
       this.getStations(this.pagination.totalPages, this.pagination.limit);
     }
+  }
+
+  changeLimit(newLimit: 5 | 10 | 15 ): void {
+    this.limit = newLimit;
+    this.getStations( 1, this.limit );
+
+    this.closeDropdown(['limitDropdown'])
+  }
+
+  closeDropdown( dropdownIds: string[] ): void {
+    dropdownIds.forEach(dropdownId => {
+      document.getElementById(dropdownId)?.removeAttribute('open');
+    });
   }
 
 }

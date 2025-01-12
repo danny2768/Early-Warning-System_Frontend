@@ -37,12 +37,27 @@
 </div>
 
  <!-- Pagination -->
- @if ( pagination && pagination.totalPages > 1) {
-  <div class="join flex justify-center mt-4">
-    <button class="join-item btn tooltip" data-tip="First" [disabled]="pagination.page === 1" (click)="firstPage()">««</button>
-    <button class="join-item btn tooltip" data-tip="Previous" [disabled]="pagination.page === 1" (click)="prevPage()">«</button>
-    <button class="join-item btn">Page {{ pagination.page }} </button>
-    <button class="join-item btn tooltip" data-tip="Next" [disabled]="pagination.page === pagination.totalPages" (click)="nextPage()">»</button>
-    <button class="join-item btn tooltip" data-tip="Last" [disabled]="pagination.page === pagination.totalPages" (click)="lastPage()">»»</button>
+ @if ( pagination && pagination.totalItems > 5) {
+  <div class="flex gap-4 justify-center items-center mt-4">
+    <div class="join flex justify-center">
+      <button class="join-item btn tooltip" data-tip="First" [disabled]="pagination.page === 1" (click)="firstPage()">««</button>
+      <button class="join-item btn tooltip" data-tip="Previous" [disabled]="pagination.page === 1" (click)="prevPage()">«</button>
+      <button class="join-item btn">Page {{ pagination.page }} </button>
+      <button class="join-item btn tooltip" data-tip="Next" [disabled]="pagination.page === pagination.totalPages" (click)="nextPage()">»</button>
+      <button class="join-item btn tooltip" data-tip="Last" [disabled]="pagination.page === pagination.totalPages" (click)="lastPage()">»»</button>
+    </div>
+
+    <!-- Items per page -->
+    <details id="limitDropdown" class="dropdown dropdown-bottom dropdown-end select-none">
+      <summary class="flex gap-2 items-center bg-gray-100 hover:bg-gray-200 rounded-lg p-3 summary-popup">
+        <div class="text-gray-500">{{ limit }}</div>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" class="size-5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5"/></svg>
+      </summary>
+      <ul class="p-2 ml-2 shadow-xl menu dropdown-content z-[1] bg-white rounded-box w-fit">
+        <li (click)="changeLimit(5)"><a>5</a></li>
+        <li (click)="changeLimit(10)"><a>10</a></li>
+        <li (click)="changeLimit(15)"><a>15</a></li>
+      </ul>
+    </details>
   </div>
 }
