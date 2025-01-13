@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Station } from '../../../shared/interfaces/station.interface';
 import { Pagination } from '../../../shared/interfaces/pagination.interface';
 import { StationResponse } from '../../../shared/interfaces/stations-resp.interface';
+import { YesNoDialogOptions } from '../../../admin/interfaces/yes-no-dialog-options.interface';
 
 @Component({
   selector: 'user-subscriptions',
@@ -33,6 +34,16 @@ export class UserSubscriptionsComponent implements OnInit {
     description: '',
   };
 
+  public yesNoDialogInfo = {
+    showDialog: false,
+    title: '',
+    description: '',
+    acceptButtonText: '',
+    discardButtonText: '',
+    acceptEvent: () => {},
+    discardEvent: () => {},
+  };
+
   constructor(
     private userService: UserService,
     private authService: AuthService
@@ -54,7 +65,7 @@ export class UserSubscriptionsComponent implements OnInit {
     this.getSubscribedStations();
   }
 
-  public getSubscribedStations( page: number = 1, limit: number = 5 ): void {
+  public getSubscribedStations( page: number = 1, limit: number = 10 ): void {
     this.userService.getSubscribedStations( page , limit )
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -117,6 +128,32 @@ export class UserSubscriptionsComponent implements OnInit {
       });
   }
 
+  private deleteStationSubscription( stationId: string ): void {
+    this.closeYesNoDialog();
+    this.userService.removeStationFromSubscription( stationId )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (subscription: StationSubscription) => {
+          this.getSubscribedStations();
+          this.displayDialog('Success', 'Network deleted successfully');
+        },
+        error: (err) => {
+          this.displayDialog('Error', 'An error occurred while deleting the network. Please try again later.');
+        }
+      });
+  }
+
+  public onDeleteSubscription( stationId: string ) {
+    this.displayYesNoDialog({
+      title: 'Delete network',
+      description: 'Are you sure you want to delete this network?',
+      acceptButtonText: 'Yes',
+      discardButtonText: 'No',
+      acceptEvent: () => this.deleteStationSubscription(stationId),
+      discardEvent: () => this.closeYesNoDialog()
+    });
+  }
+
   // # Dialog Methods
   displayDialog(title: string, description: string): void {
     this.dialogInfo = {
@@ -124,6 +161,17 @@ export class UserSubscriptionsComponent implements OnInit {
       title,
       description,
     };
+  }
+
+  displayYesNoDialog( options: YesNoDialogOptions ): void {
+    this.yesNoDialogInfo = {
+      showDialog: true,
+      ...options
+    }
+  }
+
+  closeYesNoDialog(): void {
+    this.yesNoDialogInfo.showDialog = false;
   }
 
   closeDialog(): void {
