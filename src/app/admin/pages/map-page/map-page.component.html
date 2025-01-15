@@ -37,7 +37,7 @@
                     <input type="checkbox" id="selectAllNetworks" class="checkbox" (click)="selectAll($event, networks)">
                   </div>
 
-                  <div class="overflow-y-auto max-h-24">
+                  <div class="overflow-y-auto max-h-40">
                     <!-- Submenu items -->
                     @for (networkSelect of networks; track $index) {
                       <div class="flex items-center justify-between gap-2 mb-1 mr-3">
@@ -59,7 +59,7 @@
                     <input type="checkbox" id="selectAllStations" class="checkbox" (click)="selectAll($event, stations)">
                   </div>
 
-                  <div class="overflow-y-auto max-h-24 md:max-h-32">
+                  <div class="overflow-y-auto max-h-40 md:max-h-80">
                   <!-- Submenu items -->
                   @for (stationSelect of stations; track $index) {
                     <div class="flex items-center justify-between gap-2 mb-1 mx-3">
