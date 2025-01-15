@@ -108,11 +108,13 @@ export class MapPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private getNetworks(): Promise<void> {
+  // TODO: this response is paginated and it should be handled much better than the current approach
+  private getNetworks(page = 1, limit = 1000): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.adminService.getNetworks().pipe( takeUntil(this.destroy$) )
+      this.adminService.getNetworks(page, limit).pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
+          console.log(resp);
           this.networks = resp.networks.map(network => ({ network, selected: false }));
           resolve();
         },
@@ -124,11 +126,13 @@ export class MapPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async getStations(): Promise<void> {
+  // TODO: this response is paginated and it should be handled much better than the current approach
+  private async getStations(page = 1, limit = 1000): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.adminService.getStations().pipe( takeUntil(this.destroy$) )
+      this.adminService.getStations(page, limit).pipe( takeUntil(this.destroy$) )
         .subscribe({
           next: (resp) => {
+            console.log(resp);
             this.stations = resp.stations.map(station => ({ station, selected: false }));
             resolve();
           },
