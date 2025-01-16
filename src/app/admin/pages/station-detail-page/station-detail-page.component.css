@@ -41,3 +41,14 @@
   padding: 6px 10px;
   max-width: 100px;
 }
+
+.unknown {
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background-color: #E0E0E0;
+  padding: 6px 10px;
+  max-width: 100px;
+}

@@ -11,7 +11,7 @@ import { GetSensorReadingsResp } from '../../interfaces/get-sensor-readings-resp
 
 export interface SensorWithReadings {
   sensor: Sensor;
-  readings: Reading[];
+  readings?: Reading[];
 }
 
 @Component({
@@ -143,7 +143,9 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
     this.selectedTab = tab;
   }
 
-  getChartData(readings: Reading[]): { value: number, date: string }[] {
+  getChartData(readings?: Reading[]): { value: number, date: string }[] {
+    if (!readings) return [];
+
     return readings.map(reading => ({
       value: reading.value,
       date: reading.createdAt as unknown as string
@@ -151,6 +153,8 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
   }
 
   getStatus(reading: Reading, threshold: Threshold): string {
+    if (!reading || !threshold) return 'unknown';
+
     if (reading.value >= threshold.red) {
       return 'danger';
     } else if (reading.value >= threshold.orange) {

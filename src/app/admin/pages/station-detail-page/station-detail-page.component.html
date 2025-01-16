@@ -71,12 +71,14 @@
           <!-- Title -->
           <div class="flex-1 text-2xl font-bold">{{ sensorReadings.sensor.name }}</div>
           <!-- Status -->
-          <div
-            class="flex-1 text-center normal"
-            [ngClass]="getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold)"
-          >
-            {{ getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold) | titlecase }}
-          </div>
+          @if (sensorReadings.readings) {
+            <div
+              class="flex-1 text-center normal"
+              [ngClass]="getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold)"
+            >
+              {{ getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold) | titlecase }}
+            </div>
+          }
         </div>
         <div class="collapse-content">
           <!-- Tabs -->
