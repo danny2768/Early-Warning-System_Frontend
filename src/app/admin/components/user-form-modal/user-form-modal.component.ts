@@ -72,14 +72,13 @@ export class UserFormModalComponent implements OnInit, OnDestroy {
       name: this.myForm.value.name,
       email: this.myForm.value.email,
       emailValidated: this.myForm.value.emailValidated,
-      role: this.myForm.value.role,
+      role: [this.myForm.value.role],
       phone: {
         countryCode: this.myForm.value.phone.countryCode,
         number: this.myForm.value.phone.number
       },
     };
 
-    console.log(updatedUser);
     this.updateUser(updatedUser);
 
     return false;
