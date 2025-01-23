@@ -21,13 +21,13 @@ export class DashboardComponent implements OnInit, OnDestroy{
   ) {}
 
   ngOnInit(): void {
-    this.getNetworks();
-    this.getStations();
-    this.getUsers();
+    this.getNetworks( 1, 1 );
+    this.getStations( 1, 1 );
+    this.getUsers( 1, 1 );
   }
 
-  private getNetworks(): void {
-    this.adminService.getNetworks().pipe( takeUntil(this.destroy$) )
+  private getNetworks( page: number , limit: number ): void {
+    this.adminService.getNetworks( page, limit ).pipe( takeUntil(this.destroy$) )
     .subscribe({
       next: (resp) => {
         this.totalNetworks = resp.pagination.totalItems;
@@ -38,8 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy{
     })
   }
 
-  private getStations(): void {
-    this.adminService.getStations().pipe( takeUntil(this.destroy$) )
+  private getStations( page: number , limit: number ): void {
+    this.adminService.getStations( page, limit ).pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
           this.totalStations = resp.pagination.totalItems;
@@ -50,8 +50,8 @@ export class DashboardComponent implements OnInit, OnDestroy{
       })
   }
 
-  private getUsers(): void {
-    this.adminService.getUsers().pipe( takeUntil(this.destroy$) )
+  private getUsers( page: number , limit: number): void {
+    this.adminService.getUsers( page, limit ).pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
           this.totalUsers = resp.pagination.totalItems;

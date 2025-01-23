@@ -1,10 +1,11 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MapStyle, MapStyleEnum } from '../../interfaces/map-style.type';
+import { MapStyle, MapStyleEnum } from '../../../shared/interfaces/map-style.type';
 import { AdminService } from '../../services/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Network } from '../../../shared/interfaces/network.interface';
 import { Station } from '../../../shared/interfaces/station.interface';
 import { MapComponent } from '../../components/map/map.component';
+import { ActivatedRoute } from '@angular/router';
 
 interface NetworkWithSelectionStatus {
   network: Network;
@@ -46,8 +47,15 @@ export class MapPageComponent implements OnInit, OnDestroy {
 
   public mapZoom: number = 1.2;
 
+  public dialogInfo = {
+    showDialog: false,
+    title: '',
+    description: ''
+  }
+
   constructor(
-    private adminService: AdminService
+    private adminService: AdminService,
+    private route: ActivatedRoute,
   ) {}
 
   ngAfterViewInit(): void {
@@ -63,34 +71,50 @@ export class MapPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getNetworks().then(() => {
-      // Load the selected networks from localStorage
-      const selectedNetworkIds = JSON.parse(localStorage.getItem('selectedNetworks') || '[]');
-      this.networks.forEach(network => {
-        network.selected = selectedNetworkIds.includes(network.network.id);
-      });
-    });
+  // Subscribe to the route's query parameters & destructure the stationId from the query parameters
+  this.route.queryParams.subscribe(params => {
+    const { stationId } = params;
 
-    this.getStations().then(() => {
-      // Load the selected stations from localStorage
-      const selectedStationIds = JSON.parse(localStorage.getItem('selectedStations') || '[]');
-      this.stations.forEach(station => {
-        station.selected = selectedStationIds.includes(station.station.id);
+    if (stationId) {
+      this.getStations().then(() => {
+        // Find the station that matches the stationId from the query parameters
+        const station = this.stations.find(station => station.station.id === stationId);
+
+        // If a matching station is found
+        if (station) {
+          station.selected = true;
+          // Fetch the networks and apply to the map the station found
+          this.getNetworks();
+          this.applyDisplayItems(false);
+        } else {
+          // If no matching station is found, fetch the networks & stations and display items saved
+          this.getNetworksAndDisplayItemsSaved();
+          this.getStationsAndDisplayItemsSaved();
+
+          // Display a dialog indicating that the station was not found
+          this.displayDialog('Station not found', 'The station you are looking for does not exist.')
+        }
       });
-      this.applyDisplayItems( false );
-    });
-  }
+    } else {
+      // If no stationId is present in the query parameters, fetch the networks & stations and display items saved
+      this.getNetworksAndDisplayItemsSaved();
+      this.getStationsAndDisplayItemsSaved();
+    }
+  });
+}
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private getNetworks(): Promise<void> {
+  // TODO: this response is paginated and it should be handled much better than the current approach
+  private getNetworks(page = 1, limit = 1000): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.adminService.getNetworks().pipe( takeUntil(this.destroy$) )
+      this.adminService.getNetworks(page, limit).pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (resp) => {
+          console.log(resp);
           this.networks = resp.networks.map(network => ({ network, selected: false }));
           resolve();
         },
@@ -102,11 +126,13 @@ export class MapPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async getStations(): Promise<void> {
+  // TODO: this response is paginated and it should be handled much better than the current approach
+  private async getStations(page = 1, limit = 1000): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.adminService.getStations().pipe( takeUntil(this.destroy$) )
+      this.adminService.getStations(page, limit).pipe( takeUntil(this.destroy$) )
         .subscribe({
           next: (resp) => {
+            console.log(resp);
             this.stations = resp.stations.map(station => ({ station, selected: false }));
             resolve();
           },
@@ -115,6 +141,26 @@ export class MapPageComponent implements OnInit, OnDestroy {
             reject(err);
           }
         })
+    });
+  }
+  private getNetworksAndDisplayItemsSaved(): void {
+    this.getNetworks().then(() => {
+      // Load the selected networks from localStorage
+      const selectedNetworkIds = JSON.parse(localStorage.getItem('selectedNetworks') || '[]');
+      this.networks.forEach(network => {
+        network.selected = selectedNetworkIds.includes(network.network.id);
+      });
+    });
+  }
+
+  private getStationsAndDisplayItemsSaved(): void {
+    this.getStations().then(() => {
+      // Load the selected stations from localStorage
+      const selectedStationIds = JSON.parse(localStorage.getItem('selectedStations') || '[]');
+      this.stations.forEach(station => {
+        station.selected = selectedStationIds.includes(station.station.id);
+      });
+      this.applyDisplayItems( false );
     });
   }
 
@@ -173,5 +219,17 @@ export class MapPageComponent implements OnInit, OnDestroy {
   public zoomOut(): void {
     if (!this.mapComponent) return;
     this.mapZoom = this.mapComponent.getCurrentZoom() - 0.8;
+  }
+
+  displayDialog( title: string, description: string): void {
+    this.dialogInfo = {
+      showDialog: true,
+      title,
+      description
+    }
+  }
+
+  closeDialog(): void {
+    this.dialogInfo.showDialog = false;
   }
 }

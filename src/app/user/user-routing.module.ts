@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutPageComponent } from './layout/layout-page/layout-page.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { MapPageComponent } from './pages/map-page/map-page.component';
 
 const routes: Routes = [
     {
       path: '',
       component: LayoutPageComponent,
       children: [
-        { path: 'dashboard', component: DashboardComponent },
+        { path: 'profile', component: ProfileComponent },
+        { path: 'map', component: MapPageComponent },
         {
           path: '',
-          redirectTo: 'dashboard',
+          redirectTo: 'profile',
           pathMatch: 'full'
         }
       ]

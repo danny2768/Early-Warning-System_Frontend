@@ -77,31 +77,31 @@
       <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
         <ng-container *ngIf="acceptButtonText || discardButtonText; else closeTemplate">
           <button
-            *ngIf="acceptButtonText"
-            type="button"
-            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
-                bg-[#50A060] text-base font-medium text-white hover:bg-[#349e49] focus:outline-none focus:ring-2
-                focus:ring-offset-2 focus:ring-green-400 sm:ml-3 sm:w-auto sm:text-sm"
-            (click)="onAccept()"
-          >
-            {{ acceptButtonText }}
-          </button>
-          <button
             *ngIf="discardButtonText"
             type="button"
             class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
-                bg-[#50A060] text-base font-medium text-white hover:bg-[#349e49] focus:outline-none focus:ring-2
+                bg-[#FF4040] hover:bg-[#e53935] text-base font-semibold text-white focus:outline-none focus:ring-2
                 focus:ring-offset-2 focus:ring-red-400 sm:ml-3 sm:w-auto sm:text-sm"
             (click)="onDiscard()"
           >
             {{ discardButtonText }}
+          </button>
+          <button
+            *ngIf="acceptButtonText"
+            type="button"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
+                bg-[#37da4f] hover:bg-[#30c045] text-base font-semibold text-white focus:outline-none focus:ring-2
+                focus:ring-offset-2 focus:ring-green-400 sm:ml-3 sm:w-auto sm:text-sm"
+            (click)="onAccept()"
+          >
+            {{ acceptButtonText }}
           </button>
         </ng-container>
         <ng-template #closeTemplate>
           <button
             type="button"
             class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2
-                bg-[#50A060] text-base font-medium text-white hover:bg-[#349e49] focus:outline-none focus:ring-2
+                bg-[#37da4f] hover:bg-[#30c045] text-base font-semibold text-white focus:outline-none focus:ring-2
                 focus:ring-offset-2 focus:ring-green-400 sm:ml-3 sm:w-auto sm:text-sm"
             (click)="onClose()"
           >

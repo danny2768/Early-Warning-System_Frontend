@@ -1,0 +1,31 @@
+<div class="rounded-lg border-2 border-[#e5e7eb] min-h-[550px] max-h-[800px]">
+  <div class="flex flex-col">
+    <!-- Photo -->
+    <div class="flex flex-col justify-center items-center m-8 pb-2 border-b-2">
+      <img
+        class="rounded-full w-32 h-32 mt-4"
+        src="/assets/other/userDefault.png"
+        alt="User Photo"
+      />
+      <div class="mt-6 text-xl font-bold text-[#50A060]">{{ user?.name }}</div>
+    </div>
+
+    <!-- Menu -->
+    <div class="flex flex-col gap-2">
+      <div
+        class="flex items-center justify-center gap-2 p-2 cursor-pointer hover:bg-[#e5e7eb]"
+        (click)="onSetTab('profile')"
+      >
+        <svg fill="none" stroke-width="1.5" class="size-6 stroke-gray-500" viewBox="0 0 26 26"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"></path></svg>
+        <div class="text-lg font-normal text-gray-500">Profile</div>
+      </div>
+      <div
+        class="flex items-center justify-center gap-2 p-2 cursor-pointer hover:bg-[#e5e7eb]"
+        (click)="onSetTab('subscriptions')"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5" class="size-6 stroke-gray-500" viewBox="0 0 26 26"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+        <div class="text-lg font-normal text-gray-500">Subscriptions</div>
+      </div>
+    </div>
+  </div>
+</div>

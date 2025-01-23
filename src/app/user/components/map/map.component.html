@@ -1,0 +1,15 @@
+<div class="w-full block">
+  <div #map id="map"></div>
+
+  @if (isMapLoading) {
+    <div class="mt-48 text-gray-500">Loading...</div>
+  }
+
+  @if ( dialogInfo.showDialog ) {
+    <shared-modal-dialog
+      [title]="dialogInfo.title"
+      [description]="dialogInfo.description"
+      (closeEvent)="closeDialog()">
+    </shared-modal-dialog>
+  }
+</div>

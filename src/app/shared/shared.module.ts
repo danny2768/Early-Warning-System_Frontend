@@ -4,6 +4,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
 import { RouterModule } from '@angular/router';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { RolePipe } from './pipes/role-pipe.pipe';
 
 
 
@@ -11,7 +13,9 @@ import { RouterModule } from '@angular/router';
   declarations: [
     NavBarComponent,
     ModalDialogComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    NotFoundComponent,
+    RolePipe
   ],
   imports: [
     CommonModule,
@@ -21,6 +25,7 @@ import { RouterModule } from '@angular/router';
     NavBarComponent,
     ModalDialogComponent,
     AccessDeniedComponent,
+    RolePipe,
   ]
 })
 export class SharedModule { }

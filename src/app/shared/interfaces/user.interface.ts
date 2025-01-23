@@ -4,6 +4,12 @@ export interface User {
   email:          string;
   emailValidated: boolean;
   role:           string[];
+  phone:          Phone;
   createdAt:      Date;
   updatedAt:      Date;
+}
+
+export interface Phone {
+  countryCode:   string | null;
+  number:        string | null;
 }

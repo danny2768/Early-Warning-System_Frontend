@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '../../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoginRequest } from '../../interfaces/login-req.interface';
 
 @Component({
   selector: 'app-login-form',
@@ -42,25 +43,36 @@ export class LoginFormComponent {
     const user = this.loginForm.value as User;
 
     this.subscription = this.authService.loginUser( user )
-      .subscribe( (resp) => {
-        if ( resp instanceof HttpErrorResponse ) {
-          this.displayDialog('Error', resp.error.error + '. Please try again.');
-          return false;
-        }
+      .subscribe({
+        next: (resp: LoginRequest) => {
+          if ( resp.user.role.includes('ADMIN_ROLE') || resp.user.role.includes('SUPER_ADMIN_ROLE')) {
+            this.router.navigate(['/admin']);
+            return true;
+          }
 
-        if (resp.user.role.includes('ADMIN_ROLE')) {
-          this.router.navigate(['/admin']);
-          return true;
-        }
+          if (resp.user.role.includes('USER_ROLE')) {
+            this.router.navigate(['/user'])
+            return true;
+          }
 
-        if (resp.user.role.includes('USER_ROLE')) {
-          this.router.navigate(['/user'])
-          return true;
-        }
-
-        else {
-          this.displayDialog('Error', 'Something went wrong. Please try again later or contact an admin.');
-          return false;
+          else {
+            this.displayDialog('Error', 'Something went wrong. Please try again later or contact an admin.');
+            return false;
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          switch (err.status) {
+            case 401:
+              this.displayDialog('Error', 'Invalid email or password');
+              break;
+            case 500:
+              this.displayDialog('Error', 'Something went wrong. Please try again later or contact an admin.');
+              break;
+            default:
+              this.displayDialog('Error', 'Something went wrong. Please try again later or contact an admin.');
+              break;
+          }
+          console.error('Error logging in', err);
         }
       })
 

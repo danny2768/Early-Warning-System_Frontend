@@ -2,8 +2,9 @@ import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnIn
 import { AdminService } from '../../services/admin.service';
 import { environments } from '../../../../environments/environment';
 import { LngLat, LngLatBounds, Map, Marker, Popup } from 'mapbox-gl';
-import { MapStyle } from '../../interfaces/map-style.type';
+import { MapStyle } from '../../../shared/interfaces/map-style.type';
 import { Station } from '../../../shared/interfaces/station.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'admin-map',
@@ -43,6 +44,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private adminService: AdminService,
+    private router: Router,
   ) {}
 
   ngAfterViewInit(): void {
@@ -123,7 +125,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   createStationPopup(station: Station): Popup {
-    return new Popup({
+    const popup = new Popup({
       closeButton: true,
       focusAfterOpen: false,
     }).setHTML(`
@@ -146,10 +148,19 @@ export class MapComponent implements AfterViewInit, OnChanges {
           </div>
         </div>
 
-        <button class="bg-blue-500 text-white text-base font-semibold py-1 px-4 rounded-box w-full select-none"">
+        <button id="view-details-btn" class="bg-blue-500 text-white text-base font-semibold py-1 px-4 rounded-box w-full select-none"">
           <a>View details</a>
         </button>
       `);
+
+    // Add event listener to the button
+    popup.on('open', () => {
+      document.getElementById('view-details-btn')?.addEventListener('click', () => {
+        this.router.navigate(['/admin/station-detail', station.id]);
+      });
+    });
+
+    return popup;
   }
 
   deleteActiveMarkers() {

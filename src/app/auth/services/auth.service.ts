@@ -28,7 +28,7 @@ export class AuthService {
     );
   }
 
-  public loginUser( user: User ): Observable<LoginRequest | HttpErrorResponse> {
+  public loginUser( user: User ): Observable<LoginRequest> {
     return this.http.post<LoginRequest>(`${this.baseUrl}/auth/login`, user).pipe(
       map( (resp) => {
         this.cookieService.set('token', resp.token, {
@@ -43,17 +43,21 @@ export class AuthService {
           sameSite: 'Strict',
           path: '/'
         });
+        this.cookieService.set('user', JSON.stringify(resp.user), {
+          expires: 1,
+          secure: true,
+          sameSite: 'Strict',
+        });
         this.router.navigate(['/']);
         return resp;
       }),
-      catchError( (err: HttpErrorResponse) => of(err))
     );
   }
 
   public isAdminAuthenticated(): boolean {
     const token = this.cookieService.get('token');
     const roles = this.cookieService.get('role')?.split(',') || [];
-    return token && roles.includes('ADMIN_ROLE') ? true : false;
+    return token && (roles.includes('ADMIN_ROLE') || roles.includes('SUPER_ADMIN_ROLE')) ? true : false;
   }
 
   public isUserAuthenticated(): boolean {
@@ -68,4 +72,22 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
+  public getUser(): User | undefined {
+    const userCookie = this.cookieService.get('user');
+    if (!userCookie) return undefined;
+
+    return JSON.parse(userCookie);
+  }
+
+  public getSelfUser() {
+    return this.http.get<User>(`${this.baseUrl}/api/users/self`);
+  }
+
+  public updateUser( user: Partial<User> ): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/api/users/${user.id}`, user);
+  }
+
+  public sendValidationEmail() {
+    return this.http.get(`${this.baseUrl}/auth/send-validation-email`);
+  }
 }
