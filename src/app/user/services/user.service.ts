@@ -16,8 +16,8 @@ export class UserService {
     private http: HttpClient,
   ) { }
 
-  public getStations() {
-    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/userVisible`);
+  public getStations(page: number = 1, limit: number = 10) {
+    return this.http.get<StationResponse>(`${this.baseUrl}/api/stations/userVisible?page=${page}&limit=${limit}`);
   }
 
   public getSubscribedStations( page: number = 1, limit: number = 10 ) {

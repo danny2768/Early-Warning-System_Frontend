@@ -61,8 +61,8 @@ export class MapPageComponent implements AfterViewInit, OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private getStationsAndDisplay(): void {
-    this.userService.getStations()
+  private getStationsAndDisplay(page = 1, limit = 1000): void {
+    this.userService.getStations(page, limit)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (resp) => {
