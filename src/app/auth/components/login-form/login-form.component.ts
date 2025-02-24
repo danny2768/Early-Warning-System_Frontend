@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from '../../../shared/interfaces/user.interface';
+import { Role, User } from '../../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoginRequest } from '../../interfaces/login-req.interface';
@@ -45,12 +45,12 @@ export class LoginFormComponent {
     this.subscription = this.authService.loginUser( user )
       .subscribe({
         next: (resp: LoginRequest) => {
-          if ( resp.user.role.includes('ADMIN_ROLE') || resp.user.role.includes('SUPER_ADMIN_ROLE')) {
+          if ( resp.user.role.includes(Role.ADMIN) || resp.user.role.includes(Role.SUPER_ADMIN)) {
             this.router.navigate(['/admin']);
             return true;
           }
 
-          if (resp.user.role.includes('USER_ROLE')) {
+          if (resp.user.role.includes(Role.USER)) {
             this.router.navigate(['/user'])
             return true;
           }

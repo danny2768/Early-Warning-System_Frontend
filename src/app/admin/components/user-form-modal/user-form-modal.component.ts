@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { User } from '../../../shared/interfaces/user.interface';
+import { Role, User } from '../../../shared/interfaces/user.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -52,12 +52,36 @@ export class UserFormModalComponent implements OnInit, OnDestroy {
       this.dialogMessage.description = 'User not found.';
       return;
     }
-    this.myForm.patchValue(this.user);
+    this.myForm.patchValue({
+      name: this.user.name,
+      email: this.user.email  ,
+      role: this.getUserHighestRole(this.user.role),
+      phone: {
+        countryCode: this.user.phone.countryCode,
+        number: this.user.phone.number,
+      },
+      emailValidated: this.user.emailValidated,
+    });
+
+    console.log(this.myForm.value);
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  getUserHighestRole(roles: Role[]): Role {
+    let highestRole: Role = Role.USER;
+    for (const role of roles) {
+      if (role === Role.SUPER_ADMIN) {
+        highestRole = Role.SUPER_ADMIN;
+        break;
+      } else if (role === Role.ADMIN) {
+        highestRole = Role.ADMIN;
+      }
+    }
+    return highestRole;
   }
 
   onSubmit() {

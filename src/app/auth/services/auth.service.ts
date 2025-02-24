@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { User } from '../../shared/interfaces/user.interface';
+import { Role, User } from '../../shared/interfaces/user.interface';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environments } from '../../../environments/environment';
 import { RegisterRequest } from '../interfaces/register-req.interface';
@@ -57,13 +57,13 @@ export class AuthService {
   public isAdminAuthenticated(): boolean {
     const token = this.cookieService.get('token');
     const roles = this.cookieService.get('role')?.split(',') || [];
-    return token && (roles.includes('ADMIN_ROLE') || roles.includes('SUPER_ADMIN_ROLE')) ? true : false;
+    return token && (roles.includes(Role.ADMIN) || roles.includes(Role.SUPER_ADMIN)) ? true : false;
   }
 
   public isUserAuthenticated(): boolean {
     const token = this.cookieService.get('token');
     const roles = this.cookieService.get('role')?.split(',') || [];
-    return token && roles.includes('USER_ROLE') ? true : false;
+    return token && roles.includes(Role.USER) ? true : false;
   }
 
   public logout(): void {
