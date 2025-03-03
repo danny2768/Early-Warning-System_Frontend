@@ -74,9 +74,9 @@
           @if (sensorReadings.readings) {
             <div
               class="flex-1 text-center normal"
-              [ngClass]="getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold)"
+              [ngClass]="getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold, sensorReadings.sensor.sensorType)"
             >
-              {{ getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold) | titlecase }}
+              {{ getStatus(sensorReadings.readings[sensorReadings.readings.length - 1], sensorReadings.sensor.threshold, sensorReadings.sensor.sensorType) | titlecase }}
             </div>
           }
         </div>

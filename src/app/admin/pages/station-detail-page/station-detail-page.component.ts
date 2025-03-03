@@ -152,17 +152,29 @@ export class StationDetailPageComponent implements OnInit, OnDestroy{
     }));
   }
 
-  getStatus(reading: Reading, threshold: Threshold): string {
+  getStatus(reading: Reading, threshold: Threshold, sensorType: string): string {
     if (!reading || !threshold) return 'unknown';
 
-    if (reading.value >= threshold.red) {
-      return 'danger';
-    } else if (reading.value >= threshold.orange) {
-      return 'warning';
-    } else if (reading.value >= threshold.yellow) {
-      return 'caution';
+    if (sensorType === 'level') {
+      if (reading.value <= threshold.red) {
+        return 'danger';
+      } else if (reading.value <= threshold.orange) {
+        return 'warning';
+      } else if (reading.value <= threshold.yellow) {
+        return 'caution';
+      } else {
+        return 'normal';
+      }
     } else {
-      return 'normal';
+      if (reading.value >= threshold.red) {
+        return 'danger';
+      } else if (reading.value >= threshold.orange) {
+        return 'warning';
+      } else if (reading.value >= threshold.yellow) {
+        return 'caution';
+      } else {
+        return 'normal';
+      }
     }
   }
 }
